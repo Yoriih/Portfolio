@@ -1,4 +1,4 @@
-import useState from 'react';
+import { useState } from 'react';
 
 function App() {
   const [tela, setTela] = useState("menu")
@@ -17,4 +17,6 @@ function App() {
 
     </main>
   );
-}
+} 
+
+export default App;
