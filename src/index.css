@@ -164,12 +164,44 @@ button:focus-visible {
   opacity: 1;
 }
 
-/* Mantém as telas internas legíveis e alinhadas */
+/* Faz o fundo interno preencher a janela e mantém a grade do tema pixelado. */
 .content-screen {
-  width: min(100% - 3rem, 72rem);
+  position: relative;
+  isolation: isolate;
+  --lente-x: 50%;
+  --lente-y: 50%;
   min-height: 100vh;
-  margin-inline: auto;
+  min-height: 100svh;
+  width: 100%;
+  margin: 0;
   padding-block: clamp(3rem, 9vh, 7rem);
+  padding-inline: clamp(1rem, 3vw, 2rem);
+  background-color: var(--cor-fundo);
+  background-image:
+    linear-gradient(rgb(121 226 210 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(121 226 210 / 10%) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 0;
+  transition: background-position 250ms steps(4, end);
+}
+
+/* Amplia uma cópia da grade ao redor do ponteiro para simular uma lente de aumento. */
+.content-screen::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(121 226 210 / 8%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(121 226 210 / 10%) 1px, transparent 1px);
+  background-size: 24px 24px;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.35);
+  transform-origin: var(--lente-x) var(--lente-y);
+  transition: opacity 180ms ease;
+  -webkit-mask-image: radial-gradient(circle 130px at var(--lente-x) var(--lente-y), #000 0%, transparent 100%);
+  mask-image: radial-gradient(circle 130px at var(--lente-x) var(--lente-y), #000 0%, transparent 100%);
 }
 
 .content-panel h1 {
@@ -211,6 +243,249 @@ button:focus-visible {
   }
 
   .content-screen {
-    width: min(100% - 2rem, 72rem);
+    width: 100%;
+    padding-inline: 1rem;
+  }
+}
+
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Estilo de painel com borda reta e sombra pixelada */
+.project-card {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  padding: 1.5rem;
+  border: 2px solid var(--cor-borda);
+  background-color: var(--cor-painel);
+  box-shadow: 6px 6px 0 #080a10;
+}
+
+.project-card h3 {
+  margin: 0 0 0.75rem;
+  color: var(--cor-destaque);
+  font-family: "Courier New", monospace;
+}
+
+.project-card h4 {
+  margin-bottom: 0.25rem;
+  color: var(--cor-texto);
+  font-family: "Courier New", monospace;
+}
+
+.project-card > ul {
+  padding-left: 1.25rem;
+  color: var(--cor-texto-secundario);
+  line-height: 1.7;
+}
+
+.project-card li {
+  margin-block: 0.35rem;
+}
+
+/* Agrupa os links e os mantém na base do cartão */
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+/* Links com aparência de botões da interface do jogo */
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0.85rem;
+  border: 2px solid var(--cor-borda);
+  color: var(--cor-texto-secundario);
+  background-color: #0d1018;
+  box-shadow: 3px 3px 0 #080a10;
+  font-family: "Courier New", monospace;
+  text-decoration: none;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.project-link:hover {
+  transform: translate(-2px, -2px);
+  border-color: var(--cor-destaque);
+  color: var(--cor-destaque-hover);
+  background-color: #1b2632;
+}
+
+.project-link:focus-visible {
+  outline: 3px solid var(--cor-destaque);
+  outline-offset: 4px;
+}
+
+/* Adapta os links para telas estreitas */
+@media (max-width: 600px) {
+  .project-card {
+    padding: 1.15rem;
+  }
+
+  .project-links {
+    flex-direction: column;
+  }
+}
+
+/* Limita e centraliza o conteúdo sem restringir o fundo da tela inteira. */
+.content-panel {
+  width: min(100%, 72rem);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border: 2px solid var(--cor-borda);
+  background-color: rgb(21 26 37 / 94%);
+  box-shadow: 8px 8px 0 #080a10;
+}
+
+/* NOVO: organiza os cartões de habilidades em colunas responsivas. */
+.skill-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  margin-block: 1.5rem;
+}
+
+.skill-groups article,
+.social-card {
+  padding: 1.25rem;
+  border: 2px solid var(--cor-borda);
+  background-color: #0d1018;
+  box-shadow: 4px 4px 0 #080a10;
+}
+
+.skill-groups article h3,
+.social-card h3 {
+  margin-top: 0;
+  color: var(--cor-destaque);
+  font-family: "Courier New", monospace;
+}
+
+/* NOVO: organiza os contatos em cartões e remove os marcadores padrão. */
+.social-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social-card {
+  height: 100%;
+}
+
+.social-card a {
+  color: var(--cor-destaque);
+  overflow-wrap: anywhere;
+}
+
+.social-card a:hover {
+  color: var(--cor-destaque-hover);
+}
+
+/* NOVO: adapta o espaço interno dos painéis em celulares. */
+@media (max-width: 600px) {
+  .content-panel {
+    padding: 1rem;
+  }
+
+  .skill-groups article,
+  .social-card {
+    padding: 1rem;
+  }
+}
+
+/* NOVO: apresenta cada tecnologia como uma etiqueta de interface. */
+.skill-groups ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-groups li {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-destaque);
+  background-color: var(--cor-painel);
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+}
+
+/* NOVO: dá aos links sociais aparência de botões do portfólio. */
+.social-card a {
+  display: inline-flex;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border: 2px solid var(--cor-borda);
+  background-color: var(--cor-painel);
+  box-shadow: 3px 3px 0 #080a10;
+  font-family: "Courier New", monospace;
+  text-decoration: none;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.social-card a:hover {
+  transform: translate(-2px, -2px);
+  border-color: var(--cor-destaque);
+  color: var(--cor-destaque-hover);
+  background-color: #1b2632;
+}
+
+.social-card a:focus-visible {
+  outline: 3px solid var(--cor-destaque);
+  outline-offset: 4px;
+}
+
+/* NOVO: aproxima os títulos internos do estilo pixelado da tela inicial. */
+.content-panel > h1 {
+  font-family: "Courier New", monospace;
+  font-size: clamp(1.8rem, 6vw, 3.5rem);
+  text-shadow: 4px 4px 0 #176b70;
+}
+
+/* NOVO: destaca o título de cada seção com um traço em blocos. */
+.content-panel section > h2 {
+  font-family: "Courier New", monospace;
+}
+
+.content-panel section > h2::after {
+  display: block;
+  width: min(100%, 9rem);
+  height: 3px;
+  margin-top: 0.75rem;
+  background-color: var(--cor-destaque);
+  box-shadow: 3px 3px 0 #080a10;
+  content: "";
+}
+/* Move a grade só quando o mouse está sobre o fundo, fora do painel de conteúdo. */
+@media (hover: hover) and (pointer: fine) {
+  .content-screen:hover:not(:has(.content-panel:hover)) {
+    background-position: 8px 8px, -8px -8px;
+  }
+
+  /* Exibe a lente só sobre o fundo, preservando a leitura do painel. */
+  .content-screen:hover:not(:has(.content-panel:hover))::before {
+    opacity: 1;
   }
 }

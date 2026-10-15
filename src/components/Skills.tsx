@@ -1,26 +1,31 @@
-// Cada grupo reúne tecnologias relacionadas a uma área.
 type GrupoDeHabilidades = {
   titulo: string;
   descricao: string;
   tecnologias: string[];
 };
 
-// Tecnologias que estou estudando e praticando nos meus projetos.
 const gruposDeHabilidades: GrupoDeHabilidades[] = [
   {
     titulo: 'Fundamentos da web',
-    descricao: 'A base usada para estruturar e apresentar páginas na internet.',
+    descricao: 'Tecnologias usadas para estruturar e construir páginas web.',
     tecnologias: ['HTML', 'CSS', 'JavaScript'],
   },
   {
     titulo: 'Desenvolvimento de interfaces',
-    descricao: 'Ferramentas usadas para criar a interface deste portfólio.',
+    descricao: 'Ferramentas usadas na interface deste portfólio.',
     tecnologias: ['React', 'TypeScript', 'Vite'],
   },
   {
-    titulo: 'Versionamento',
-    descricao: 'Ferramentas para acompanhar e compartilhar as mudanças nos projetos.',
-    tecnologias: ['Git', 'GitHub'],
+    
+    titulo: 'Back-end e banco de dados',
+    descricao: 'Linguagens e banco de dados presentes nos seus estudos e projetos.',
+    tecnologias: ['PHP', 'Python', 'MySQL', 'Firebase Firestore'],
+  },
+  {
+    titulo: 'Ferramentas e versionamento',
+    descricao: 'Ferramentas para editar código e acompanhar as mudanças nos projetos.',
+    
+    tecnologias: ['Git', 'GitHub', 'Visual Studio Code'],
   },
 ];
 
@@ -30,8 +35,7 @@ function Skills() {
       <h2 id="titulo-habilidades">Habilidades e tecnologias</h2>
 
       <p>
-        Estas são algumas das tecnologias que estou estudando e praticando
-        enquanto desenvolvo meus projetos.
+        Estas são algumas das tecnologias que estudo e pratico nos meus projetos.
       </p>
 
       <div className="skill-groups">
