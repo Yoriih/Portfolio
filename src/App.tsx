@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type PointerEvent } from 'react';
 import About from './components/About';
 import Projects from './components/Projects';
 import Header from './components/Header';
@@ -27,8 +27,23 @@ const descricoes: Record<Tela, string> = {
 function App() {
   const [tela, setTela] = useState<Tela>('menu');
 
+  // Atualiza as coordenadas da lente somente quando o ponteiro está sobre o fundo.
+  function acompanharPonteiro(event: PointerEvent<HTMLElement>) {
+    if ((event.target as HTMLElement).closest('.content-panel')) return;
+
+    const limites = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - limites.left) / limites.width) * 100;
+    const y = ((event.clientY - limites.top) / limites.height) * 100;
+
+    event.currentTarget.style.setProperty('--lente-x', `${x}%`);
+    event.currentTarget.style.setProperty('--lente-y', `${y}%`);
+  }
+
   return (
-    <main className={tela === 'menu' ? 'home-screen' : 'content-screen'}>
+    <main
+      className={tela === 'menu' ? 'home-screen' : 'content-screen'}
+      onPointerMove={tela === 'menu' ? undefined : acompanharPonteiro}
+    >
       <section
         className={tela === 'menu' ? 'home-content' : 'content-panel'}
         aria-labelledby="titulo-pagina"
