@@ -1,8 +1,24 @@
+/* Carrega a fonte pixelada do título; mantém uma fonte local como alternativa. */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+/* Registra as coordenadas em porcentagem para suavizar o acompanhamento do cursor. */
+@property --distorcao-x {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+
+@property --distorcao-y {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+
 /* Cores, tipografia e opções visuais compartilhadas */
 :root {
   font-family: "Segoe UI", sans-serif;
-  color: #f4f4f5;
-  background-color: #0d1018;
+  color: #f4f0ff;
+  background-color: #090612;
   color-scheme: dark;
 
   font-synthesis: none;
@@ -10,13 +26,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --cor-fundo: #0d1018;
-  --cor-texto: #f4f4f5;
-  --cor-texto-secundario: #c0c6d4;
-  --cor-destaque: #79e2d2;
-  --cor-destaque-hover: #a4f5e8;
-  --cor-borda: #384153;
-  --cor-painel: #151a25;
+  --cor-fundo: #090612;
+  --cor-texto: #f4f0ff;
+  --cor-texto-secundario: #c8bddb;
+  --cor-destaque: #c084fc;
+  --cor-destaque-hover: #e9d5ff;
+  --cor-borda: #563678;
+  --cor-painel: #171020;
+  /* Guarda a posição do cursor para centralizar a distorção no cenário. */
+  --distorcao-x: 50%;
+  --distorcao-y: 50%;
 }
 
 /* Faz o tamanho total incluir padding e bordas */
@@ -50,6 +69,9 @@ button:focus-visible {
 
 /* Centraliza o conteúdo inicial nos dois eixos da tela */
 .home-screen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
   min-height: 100vh;
   min-height: 100svh;
@@ -58,18 +80,24 @@ button:focus-visible {
   padding: 2rem;
   place-items: center;
 
-  /* Grade discreta para lembrar um cenário de jogo 2D */
+  /* Mantém as luzes e os pixels do cenário em escala de cinza; o hover revela a cópia roxa abaixo. */
   background-color: var(--cor-fundo);
   background-image:
-    linear-gradient(rgb(121 226 210 / 4%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(121 226 210 / 4%) 1px, transparent 1px);
-  background-size: 24px 24px;
+    radial-gradient(ellipse at 18% 18%, rgb(170 170 170 / 27%), transparent 38%),
+    radial-gradient(ellipse at 84% 78%, rgb(125 125 125 / 17%), transparent 36%),
+    radial-gradient(circle, rgb(225 225 225 / 68%) 1.5px, transparent 2px),
+    radial-gradient(circle, rgb(175 175 175 / 58%) 1px, transparent 1.5px),
+    linear-gradient(135deg, #090909 0%, #181818 52%, #080808 100%);
+  background-size: auto, auto, 52px 52px, 79px 79px, auto;
 }
 
 /* Limita a largura e centraliza nome, frase e navegação */
 .home-content {
+  position: relative;
+  z-index: 1;
   width: min(100%, 58rem);
   text-align: center;
+  animation: screen-enter 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Cabeçalho da apresentação */
@@ -77,38 +105,87 @@ button:focus-visible {
   margin: 0;
 }
 
-/* Nome em fonte monoespaçada e sombra em blocos, como pixels */
+/* Nome em fonte pesada de arcade, com sombra em degraus para lembrar pixels. */
 .hero-name {
   margin: 0;
-  color: var(--cor-texto);
-  font-family: "Courier New", monospace;
-  font-size: clamp(1.45rem, 7.8vw, 4rem);
-  font-weight: 700;
-  line-height: 1.25;
-  overflow-wrap: anywhere;
-  text-shadow: 4px 4px 0 #176b70;
+  /* Lavanda translúcida troca o branco chapado por um brilho fumê. */
+  color: rgb(220 204 242 / 82%);
+  -webkit-text-fill-color: rgb(220 204 242 / 82%);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  /* Reduz a fonte com a largura da tela para manter o nome completo em uma linha. */
+  font-size: clamp(0.62rem, 3.4vw, 2.2rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.6;
+  white-space: nowrap;
+  -webkit-text-stroke: 0.3px rgb(233 213 255 / 45%);
+  text-shadow: 4px 4px 0 #6d28d9, 0 0 5px rgb(233 213 255 / 24%);
+  animation: title-pixel-glow 3.8s ease-in-out infinite;
+}
+
+/* Separa as letras para permitir que cada uma se mova sem deslocar a linha inteira. */
+.hero-name-letter {
+  display: inline-block;
+}
+
+/* Mantém os grupos de palavras juntos para o nome quebrar apenas entre as duas linhas planejadas. */
+.hero-name-line {
+  display: inline-block;
+  margin-inline-end: 0.45em;
+  white-space: nowrap;
+}
+
+/* Anima somente a letra que estiver sob o cursor; as demais ficam paradas. */
+.hero-name-letter:hover {
+  animation: name-letter-hop 520ms cubic-bezier(0.2, 0.8, 0.25, 1.2) both;
 }
 
 /* Formatação da citação */
 .hero-quote blockquote {
-  max-width: 48rem;
+  /* Usa a largura do bloco central para que a frase continue centralizada. */
+  width: 100%;
+  max-width: none;
   margin: 2rem auto 0;
+  text-align: center;
+  animation: screen-enter 900ms 120ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .hero-quote p {
   margin: 0;
   color: var(--cor-texto-secundario);
-  font-size: clamp(1rem, 2.4vw, 1.35rem);
-  line-height: 1.8;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  /* Reduz com o viewport para impedir que a frase pixelada quebre em telas estreitas. */
+  font-size: min(0.76rem, 1.2vw);
+  line-height: 2.2;
+  white-space: nowrap;
+  -webkit-text-stroke: 0.3px rgb(233 213 255 / 45%);
+  text-shadow: 0 0 5px rgb(233 213 255 / 34%), 0 0 12px rgb(192 132 252 / 16%);
+}
+
+/* Mantém o cursor quadrado piscando durante a digitação e enquanto aguarda. */
+.hero-quote p.quote-cursor::after,
+.hero-quote cite.quote-cursor::after {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.9em;
+  margin-left: 0.15em;
+  background-color: var(--cor-destaque);
+  box-shadow: 2px 2px 0 #6d28d9;
+  content: "";
+  vertical-align: -0.08em;
+  animation: pixel-caret-blink 700ms steps(2, end) infinite;
 }
 
 .hero-quote cite {
   display: block;
   margin-top: 0.8rem;
-  color: var(--cor-destaque);
-  font-family: "Courier New", monospace;
-  font-size: 0.95rem;
+  /* Repete a tipografia e o tom da frase para a assinatura parecer sua continuação. */
+  color: var(--cor-texto-secundario);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: min(0.76rem, 1.2vw);
   font-style: normal;
+  -webkit-text-stroke: 0.3px rgb(233 213 255 / 45%);
+  text-shadow: 0 0 5px rgb(233 213 255 / 34%), 0 0 12px rgb(192 132 252 / 16%);
 }
 
 /* Organiza os botões abaixo da citação */
@@ -118,21 +195,23 @@ button:focus-visible {
   justify-content: center;
   gap: 0.8rem;
   margin-top: 2.5rem;
+  animation: screen-enter 950ms 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Botões discretos com bordas retas e sombra em degrau */
 .menu-button,
-.content-panel > button {
+.content-panel > button,
+.contact-back-button {
   position: relative;
   padding: 0.75rem 1rem;
   border: 2px solid var(--cor-borda);
   border-radius: 0;
   color: var(--cor-texto-secundario);
-  background-color: rgb(21 26 37 / 85%);
-  box-shadow: 4px 4px 0 #080a10;
+  background-color: rgb(23 16 32 / 85%);
+  box-shadow: 4px 4px 0 #04020a;
   cursor: pointer;
-  font-family: "Courier New", monospace;
-  font-size: 0.9rem;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.58rem;
   transition:
     color 150ms ease,
     border-color 150ms ease,
@@ -152,24 +231,76 @@ button:focus-visible {
 }
 
 .menu-button:hover,
-.content-panel > button:hover {
+.content-panel > button:hover,
+.contact-back-button:hover {
   transform: translate(-2px, -2px);
   border-color: var(--cor-destaque);
   color: var(--cor-destaque-hover);
-  background-color: #1b2632;
-  box-shadow: 6px 6px 0 #080a10;
+  background-color: #241632;
+  box-shadow: 6px 6px 0 #04020a;
 }
 
 .menu-button:hover::before {
   opacity: 1;
 }
 
-/* Faz o fundo interno preencher a janela e mantém a grade do tema pixelado. */
+/* Dá aos botões uma flutuação curta de idle comum em menus de jogos 2D. */
+.menu-button {
+  animation: pixel-idle 3.2s ease-in-out infinite;
+}
+
+.menu-button:nth-child(2) { animation-delay: 180ms; }
+.menu-button:nth-child(3) { animation-delay: 360ms; }
+.menu-button:nth-child(4) { animation-delay: 540ms; }
+
+/* Arredonda caixas; as sombras em degraus preservam o visual pixelado. */
+.content-panel,
+.project-card,
+.skill-groups article,
+.social-card,
+.menu-button,
+.content-panel > button,
+.contact-back-button,
+.project-link,
+.skill-groups li {
+  border-radius: 7px;
+}
+
+/* Distorce uma cópia do cenário em uma área difusa ao redor do ponteiro. */
+.home-screen::before,
+.content-screen::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-color: var(--cor-fundo);
+  background-image:
+    radial-gradient(ellipse at 18% 18%, rgb(147 51 234 / 32%), transparent 38%),
+    radial-gradient(ellipse at 84% 78%, rgb(192 38 211 / 23%), transparent 36%),
+    radial-gradient(circle, rgb(216 180 254 / 84%) 1.5px, transparent 2px),
+    radial-gradient(circle, rgb(192 132 252 / 74%) 1px, transparent 1.5px),
+    linear-gradient(135deg, #090612 0%, #160f26 52%, #08050f 100%);
+  background-size: auto, auto, 52px 52px, 79px 79px, auto;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  filter: url(#distorcao-organica);
+  transition: opacity 220ms ease, --distorcao-x 220ms cubic-bezier(0.22, 1, 0.36, 1), --distorcao-y 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-mask-image: radial-gradient(ellipse 330px 260px at var(--distorcao-x) var(--distorcao-y), #000 0%, rgb(0 0 0 / 85%) 34%, rgb(0 0 0 / 38%) 68%, transparent 100%);
+  mask-image: radial-gradient(ellipse 330px 260px at var(--distorcao-x) var(--distorcao-y), #000 0%, rgb(0 0 0 / 85%) 34%, rgb(0 0 0 / 38%) 68%, transparent 100%);
+}
+
+/* Guarda o filtro SVG fora do layout; ele só fornece ruído para a distorção. */
+.visual-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Faz as telas internas preencherem a janela e mantém o cenário arcade em preto e branco. */
 .content-screen {
   position: relative;
   isolation: isolate;
-  --lente-x: 50%;
-  --lente-y: 50%;
   min-height: 100vh;
   min-height: 100svh;
   width: 100%;
@@ -178,35 +309,18 @@ button:focus-visible {
   padding-inline: clamp(1rem, 3vw, 2rem);
   background-color: var(--cor-fundo);
   background-image:
-    linear-gradient(rgb(121 226 210 / 3%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(121 226 210 / 10%) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: 0 0, 0 0;
-  transition: background-position 250ms steps(4, end);
-}
-
-/* Amplia uma cópia da grade ao redor do ponteiro para simular uma lente de aumento. */
-.content-screen::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background-image:
-    linear-gradient(rgb(121 226 210 / 8%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(121 226 210 / 10%) 1px, transparent 1px);
-  background-size: 24px 24px;
-  content: "";
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(1.35);
-  transform-origin: var(--lente-x) var(--lente-y);
-  transition: opacity 180ms ease;
-  -webkit-mask-image: radial-gradient(circle 130px at var(--lente-x) var(--lente-y), #000 0%, transparent 100%);
-  mask-image: radial-gradient(circle 130px at var(--lente-x) var(--lente-y), #000 0%, transparent 100%);
+    radial-gradient(ellipse at 18% 18%, rgb(170 170 170 / 27%), transparent 38%),
+    radial-gradient(ellipse at 84% 78%, rgb(125 125 125 / 17%), transparent 36%),
+    radial-gradient(circle, rgb(225 225 225 / 68%) 1.5px, transparent 2px),
+    radial-gradient(circle, rgb(175 175 175 / 58%) 1px, transparent 1.5px),
+    linear-gradient(135deg, #090909 0%, #181818 52%, #080808 100%);
+  background-size: auto, auto, 52px 52px, 79px 79px, auto;
 }
 
 .content-panel h1 {
   margin: 0 0 1.5rem;
   color: var(--cor-texto);
+  font-family: "Press Start 2P", "Courier New", monospace;
   font-size: clamp(2.5rem, 7vw, 5rem);
   line-height: 1.15;
 }
@@ -214,7 +328,19 @@ button:focus-visible {
 .content-panel h2,
 .content-panel h3 {
   color: var(--cor-texto);
+  font-family: "Press Start 2P", "Courier New", monospace;
   line-height: 1.2;
+}
+
+/* Mantém títulos compactos porque a fonte pixelada ocupa mais largura. */
+.content-panel > h1 {
+  font-size: clamp(0.9rem, 3.5vw, 2.1rem);
+  line-height: 1.8;
+}
+
+.content-panel section > h2 {
+  font-size: clamp(0.7rem, 1.8vw, 1.05rem);
+  line-height: 2;
 }
 
 .content-panel p {
@@ -265,19 +391,23 @@ button:focus-visible {
   padding: 1.5rem;
   border: 2px solid var(--cor-borda);
   background-color: var(--cor-painel);
-  box-shadow: 6px 6px 0 #080a10;
+  box-shadow: 6px 6px 0 #04020a;
 }
 
 .project-card h3 {
   margin: 0 0 0.75rem;
   color: var(--cor-destaque);
-  font-family: "Courier New", monospace;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.72rem;
+  line-height: 1.8;
 }
 
 .project-card h4 {
   margin-bottom: 0.25rem;
   color: var(--cor-texto);
-  font-family: "Courier New", monospace;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.58rem;
+  line-height: 1.8;
 }
 
 .project-card > ul {
@@ -307,9 +437,10 @@ button:focus-visible {
   padding: 0.65rem 0.85rem;
   border: 2px solid var(--cor-borda);
   color: var(--cor-texto-secundario);
-  background-color: #0d1018;
-  box-shadow: 3px 3px 0 #080a10;
-  font-family: "Courier New", monospace;
+  background-color: #090612;
+  box-shadow: 3px 3px 0 #04020a;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.52rem;
   text-decoration: none;
   transition:
     color 150ms ease,
@@ -322,7 +453,7 @@ button:focus-visible {
   transform: translate(-2px, -2px);
   border-color: var(--cor-destaque);
   color: var(--cor-destaque-hover);
-  background-color: #1b2632;
+  background-color: #241632;
 }
 
 .project-link:focus-visible {
@@ -343,12 +474,53 @@ button:focus-visible {
 
 /* Limita e centraliza o conteúdo sem restringir o fundo da tela inteira. */
 .content-panel {
+  position: relative;
+  z-index: 1;
   width: min(100%, 72rem);
   margin-inline: auto;
   padding: clamp(1.25rem, 4vw, 2.5rem);
   border: 2px solid var(--cor-borda);
-  background-color: rgb(21 26 37 / 94%);
-  box-shadow: 8px 8px 0 #080a10;
+  background-color: rgb(23 16 32 / 94%);
+  box-shadow: 8px 8px 0 #04020a;
+  animation: screen-enter 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Anima a entrada dos cartões em sequência, como itens surgindo em uma fase. */
+.project-card,
+.skill-groups article,
+.social-card {
+  animation: card-enter 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.project-list > li:nth-child(2) .project-card,
+.skill-groups article:nth-child(2),
+.social-list > li:nth-child(2) .social-card { animation-delay: 100ms; }
+.project-list > li:nth-child(3) .project-card,
+.skill-groups article:nth-child(3),
+.social-list > li:nth-child(3) .social-card { animation-delay: 200ms; }
+.project-list > li:nth-child(4) .project-card,
+.skill-groups article:nth-child(4),
+.social-list > li:nth-child(4) .social-card { animation-delay: 300ms; }
+
+/* Faz cartões e etiquetas responderem com movimento nítido ao passar o mouse. */
+.project-card,
+.skill-groups article,
+.social-card,
+.skill-groups li {
+  transition: transform 180ms steps(4, end), border-color 180ms ease, box-shadow 180ms steps(4, end);
+}
+
+.project-card:hover,
+.skill-groups article:hover,
+.social-card:hover {
+  transform: translate(-5px, -5px);
+  border-color: var(--cor-destaque);
+  box-shadow: 10px 10px 0 #04020a, 0 0 18px rgb(192 132 252 / 13%);
+}
+
+.skill-groups li:hover {
+  transform: translateY(-3px);
+  border-color: var(--cor-destaque-hover);
 }
 
 /* NOVO: organiza os cartões de habilidades em colunas responsivas. */
@@ -363,15 +535,17 @@ button:focus-visible {
 .social-card {
   padding: 1.25rem;
   border: 2px solid var(--cor-borda);
-  background-color: #0d1018;
-  box-shadow: 4px 4px 0 #080a10;
+  background-color: #090612;
+  box-shadow: 4px 4px 0 #04020a;
 }
 
 .skill-groups article h3,
 .social-card h3 {
   margin-top: 0;
   color: var(--cor-destaque);
-  font-family: "Courier New", monospace;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.68rem;
+  line-height: 1.8;
 }
 
 /* NOVO: organiza os contatos em cartões e remove os marcadores padrão. */
@@ -424,8 +598,9 @@ button:focus-visible {
   border: 1px solid var(--cor-borda);
   color: var(--cor-destaque);
   background-color: var(--cor-painel);
-  font-family: "Courier New", monospace;
-  font-size: 0.9rem;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.48rem;
+  line-height: 1.8;
 }
 
 /* NOVO: dá aos links sociais aparência de botões do portfólio. */
@@ -435,8 +610,9 @@ button:focus-visible {
   padding: 0.5rem 0.7rem;
   border: 2px solid var(--cor-borda);
   background-color: var(--cor-painel);
-  box-shadow: 3px 3px 0 #080a10;
-  font-family: "Courier New", monospace;
+  box-shadow: 3px 3px 0 #04020a;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.5rem;
   text-decoration: none;
   transition:
     color 150ms ease,
@@ -449,7 +625,7 @@ button:focus-visible {
   transform: translate(-2px, -2px);
   border-color: var(--cor-destaque);
   color: var(--cor-destaque-hover);
-  background-color: #1b2632;
+  background-color: #241632;
 }
 
 .social-card a:focus-visible {
@@ -459,14 +635,17 @@ button:focus-visible {
 
 /* NOVO: aproxima os títulos internos do estilo pixelado da tela inicial. */
 .content-panel > h1 {
-  font-family: "Courier New", monospace;
-  font-size: clamp(1.8rem, 6vw, 3.5rem);
-  text-shadow: 4px 4px 0 #176b70;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(0.9rem, 3.5vw, 2.1rem);
+  text-shadow: 4px 4px 0 #6d28d9;
+  line-height: 1.8;
 }
 
 /* NOVO: destaca o título de cada seção com um traço em blocos. */
 .content-panel section > h2 {
-  font-family: "Courier New", monospace;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(0.7rem, 1.8vw, 1.05rem);
+  line-height: 2;
 }
 
 .content-panel section > h2::after {
@@ -475,17 +654,344 @@ button:focus-visible {
   height: 3px;
   margin-top: 0.75rem;
   background-color: var(--cor-destaque);
-  box-shadow: 3px 3px 0 #080a10;
+  box-shadow: 3px 3px 0 #04020a;
   content: "";
 }
-/* Move a grade só quando o mouse está sobre o fundo, fora do painel de conteúdo. */
-@media (hover: hover) and (pointer: fine) {
-  .content-screen:hover:not(:has(.content-panel:hover)) {
-    background-position: 8px 8px, -8px -8px;
-  }
 
-  /* Exibe a lente só sobre o fundo, preservando a leitura do painel. */
+/* Unifica a tipografia, o tom fumê e o brilho dos títulos internos com o nome da tela inicial. */
+.content-panel h1,
+.content-panel h2,
+.content-panel h3,
+.content-panel h4 {
+  color: rgb(220 204 242 / 82%);
+  -webkit-text-fill-color: rgb(220 204 242 / 82%);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  -webkit-text-stroke: 0.3px rgb(233 213 255 / 45%);
+  text-shadow: 4px 4px 0 #6d28d9, 0 0 5px rgb(233 213 255 / 24%);
+  animation: title-pixel-glow 3.8s ease-in-out infinite;
+}
+
+/* Reúne os perfis em uma janela de contatos inspirada em interfaces de jogos 2D. */
+.contact-window {
+  width: min(100%, 36rem);
+  margin: 2rem auto 0;
+  overflow: hidden;
+  border: 3px solid var(--cor-borda);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgb(49 29 75 / 96%), rgb(20 13 32 / 98%));
+  box-shadow: 7px 7px 0 #04020a, 0 0 24px rgb(192 132 252 / 12%);
+}
+
+/* Deixa somente a janela de contatos visível como moldura nesta página. */
+.content-panel--social {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+/* A barra superior imita o cabeçalho de uma janela pixelada, usando a paleta roxa atual. */
+.contact-window-bar {
+  display: flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.8rem;
+  border-bottom: 3px solid #090612;
+  color: var(--cor-texto);
+  background: linear-gradient(90deg, #542c7a, #8b45a8 58%, #542c7a);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.48rem;
+  text-shadow: 2px 2px 0 #321447;
+}
+
+.contact-window-controls {
+  flex: none;
+  color: #ead7ff;
+  letter-spacing: 0.3rem;
+}
+
+/* Exibe o nome da página e a saudação diretamente na barra superior da janela. */
+.contact-window-bar-title {
+  margin: 0;
+  color: #f4eaff;
+  -webkit-text-fill-color: #f4eaff;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(0.44rem, 1.1vw, 0.68rem);
+  line-height: 1.7;
+  text-shadow: 2px 2px 0 #321447;
+  white-space: nowrap;
+  animation: none;
+}
+
+/* Sobrepõe o tamanho global dos h1 para caber o título inteiro na barra da janela. */
+.content-panel--social .contact-window-bar-title {
+  flex: 1;
+  min-width: 0;
+  font-size: clamp(0.42rem, 0.8vw, 0.58rem);
+  line-height: 1.6;
+  -webkit-text-stroke: 0;
+  text-shadow: 2px 2px 0 #321447;
+  animation: none;
+}
+
+/* Cria um avatar tipográfico que ocupa o lugar do retrato da referência sem exigir uma imagem. */
+.contact-avatar {
+  display: grid;
+  width: 5.25rem;
+  aspect-ratio: 1;
+  margin: 0 auto 1.25rem;
+  place-items: center;
+  overflow: hidden;
+  border: 3px solid #68467e;
+  border-radius: 50%;
+  color: #f4eaff;
+  background: radial-gradient(circle at 50% 35%, #39234d, #1b1228 68%, #100b18);
+  box-shadow: inset 0 0 0 3px #100b18, 4px 4px 0 #04020a;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.8rem;
+  text-shadow: 3px 3px 0 #321447;
+}
+
+/* Desenha um avatar encapuzado e sombrio com brilho violeta, usando apenas SVG e CSS. */
+.contact-avatar svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 7px rgb(192 132 252 / 40%));
+  shape-rendering: crispEdges;
+}
+
+.avatar-hood { fill: #291936; stroke: #68467e; stroke-width: 3; }
+.avatar-shadow { fill: #090612; }
+.avatar-cloak { fill: #130e1d; stroke: #50355f; stroke-width: 2; }
+.avatar-eyes { fill: #c084fc; filter: drop-shadow(0 0 4px #a855f7); }
+
+/* Centraliza o título e os cartões dentro da janela, com respiro semelhante ao painel da imagem. */
+.contact-window-body {
+  padding: 1.4rem clamp(1rem, 5vw, 2rem) 1rem;
+}
+
+.contact-window-intro {
+  margin: 0 0 1.25rem;
+  color: #ead7ff;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  text-shadow: 3px 3px 0 #6d28d9, 0 0 12px rgb(192 132 252 / 36%);
+  text-align: center;
+}
+
+/* Empilha os canais como linhas de uma lista de contatos, em vez de cartões independentes. */
+.social-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social-card {
+  display: grid;
+  grid-template-columns: 2.8rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem;
+  border: 2px solid rgb(192 132 252 / 38%);
+  background: rgb(12 8 20 / 58%);
+  box-shadow: 3px 3px 0 #04020a;
+}
+
+/* Dá a cada rede um marcador circular violeta que permanece legível sem ícones externos. */
+.social-icon {
+  display: grid;
+  width: 2.65rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 2px solid #c084fc;
+  border-radius: 50%;
+  color: #f4eaff;
+  background: #7136a2;
+  box-shadow: inset 0 0 0 2px rgb(9 6 18 / 45%);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.52rem;
+}
+
+.social-icon-svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: currentColor;
+}
+
+.social-info { min-width: 0; }
+
+.social-info h4 {
+  margin: 0 0 0.35rem;
+  color: #ead7ff;
+  -webkit-text-fill-color: #ead7ff;
+  font-size: 0.72rem;
+  line-height: 1.8;
+  text-shadow: 2px 2px 0 #6d28d9, 0 0 9px rgb(192 132 252 / 28%);
+  animation: none;
+}
+
+.social-info .social-identifier {
+  margin: 0;
+  color: var(--cor-texto);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.5rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+/* Mantém a ação de cada canal compacta, como um botão da janela de jogo. */
+.social-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.5rem 0.55rem;
+  white-space: nowrap;
+}
+
+.contact-window-hint {
+  margin: 1rem 0 0;
+  color: var(--cor-texto-secundario);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.48rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* Mantém o retorno ao menu dentro da janela, como o botão de confirmação da referência. */
+.contact-back-button {
+  display: block;
+  margin: 0.9rem 0 0 auto;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.48rem;
+}
+
+/* Reorganiza cada contato em celulares para preservar o nome, o identificador e o botão. */
+@media (max-width: 480px) {
+  .contact-window-bar { font-size: 0.4rem; }
+  .content-panel--social .contact-window-bar-title { font-size: 0.38rem; }
+  .contact-window-intro { font-size: 0.68rem; }
+  .social-card { grid-template-columns: 2.5rem minmax(0, 1fr); }
+  .social-card a { grid-column: 2; justify-self: start; }
+  .social-info h4 { font-size: 0.62rem; }
+}
+/* Ativa a lente somente sobre o fundo livre, sem cobrir o conteúdo. */
+@media (hover: hover) and (pointer: fine) {
   .content-screen:hover:not(:has(.content-panel:hover))::before {
     opacity: 1;
+  }
+
+  .home-screen:hover:not(:has(.home-content:hover))::before {
+    opacity: 1;
+  }
+
+  /* Mantém a revelação colorida acessível sobre o fundo que envolve a janela de contatos. */
+  .content-screen:has(.content-panel--social):hover:not(:has(.contact-window:hover))::before {
+    opacity: 1;
+  }
+
+}
+
+/* Traz cada tela para frente com um pequeno salto de fliperama. */
+@keyframes screen-enter {
+  from { opacity: 0; transform: translateY(22px) scale(0.975); filter: blur(5px); }
+  70% { opacity: 1; filter: blur(0); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+/* Os cartões surgem de baixo com um toque de escala, sem perder nitidez final. */
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Alterna a sombra em passos duros para imitar o brilho de sprites pixelados. */
+@keyframes title-pixel-glow {
+  0%, 100% { text-shadow: 4px 4px 0 #6d28d9, 0 0 5px rgb(233 213 255 / 22%), 0 0 14px rgb(192 132 252 / 12%); }
+  50% { text-shadow: 4px 4px 0 #6d28d9, 0 0 12px rgb(233 213 255 / 42%), 0 0 28px rgb(192 132 252 / 22%); }
+}
+
+/* Faz cada letra subir e retornar suavemente à posição original. */
+@keyframes name-letter-hop {
+  0%, 100% { transform: translateY(0); }
+  42% { transform: translateY(-0.42em); }
+  68% { transform: translateY(0.08em); }
+}
+
+/* Faz os botões flutuarem com aceleração contínua, sem saltos entre quadros. */
+@keyframes pixel-idle {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+
+/* Pisca o cursor em intervalos secos, como o indicador de um terminal de jogo. */
+@keyframes pixel-caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Reduz áreas e movimentos em celulares para manter navegação confortável. */
+@media (max-width: 600px) {
+  .home-screen { padding: 1rem; }
+  .home-content { width: 100%; }
+  /* Aumenta o nome e usa duas linhas equilibradas para a largura estreita do celular. */
+  .hero-name {
+    white-space: normal;
+    font-size: clamp(0.85rem, 5vw, 1.1rem);
+    line-height: 1.8;
+    text-shadow: 3px 3px 0 #6d28d9;
+  }
+  .hero-name-line {
+    display: block;
+    margin-inline-end: 0;
+  }
+  /* Permite que a frase e a assinatura ocupem linhas naturais com leitura confortável. */
+  .hero-quote p,
+  .hero-quote cite {
+    font-size: clamp(0.62rem, 3.5vw, 0.82rem);
+    line-height: 2;
+    white-space: normal;
+    text-wrap: pretty;
+  }
+  /* Empilha os botões e mantém uma área de toque ampla e centralizada. */
+  .main-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+  }
+  .menu-button {
+    width: min(100%, 17rem);
+    min-height: 44px;
+    font-size: 0.62rem;
+  }
+  .content-panel { box-shadow: 5px 5px 0 #04020a; }
+  .project-card,
+  .skill-groups article,
+  .social-card { padding: 1rem; }
+}
+
+/* Respeita quem prefere reduzir movimento nas configurações do dispositivo. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Para também a animação SVG do ruído para respeitar movimento reduzido. */
+  .visual-filters animate {
+    display: none;
   }
 }

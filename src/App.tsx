@@ -27,25 +27,59 @@ const descricoes: Record<Tela, string> = {
 function App() {
   const [tela, setTela] = useState<Tela>('menu');
 
-  // Atualiza as coordenadas da lente somente quando o ponteiro está sobre o fundo.
+  // Atualiza o ponto da distorção orgânica sem ativá-la sobre o conteúdo.
   function acompanharPonteiro(event: PointerEvent<HTMLElement>) {
-    if ((event.target as HTMLElement).closest('.content-panel')) return;
+    if ((event.target as HTMLElement).closest('.home-content, .contact-window, .content-panel:not(.content-panel--social)')) return;
 
     const limites = event.currentTarget.getBoundingClientRect();
     const x = ((event.clientX - limites.left) / limites.width) * 100;
     const y = ((event.clientY - limites.top) / limites.height) * 100;
 
-    event.currentTarget.style.setProperty('--lente-x', `${x}%`);
-    event.currentTarget.style.setProperty('--lente-y', `${y}%`);
+    event.currentTarget.style.setProperty('--distorcao-x', `${x}%`);
+    event.currentTarget.style.setProperty('--distorcao-y', `${y}%`);
   }
 
   return (
     <main
-      className={tela === 'menu' ? 'home-screen' : 'content-screen'}
-      onPointerMove={tela === 'menu' ? undefined : acompanharPonteiro}
+        className={tela === 'menu' ? 'home-screen' : 'content-screen'}
+      onPointerMove={acompanharPonteiro}
     >
+      {/* Noise invisível ao usuário serve como mapa para a distorção orgânica do fundo. */}
+      <svg className="visual-filters" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="distorcao-organica" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.012 0.018"
+              numOctaves="2"
+              seed="8"
+              result="textura"
+            >
+              <animate
+                attributeName="baseFrequency"
+                values="0.010 0.016; 0.014 0.021; 0.010 0.016"
+                dur="7s"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="textura"
+              scale="48"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
       <section
-        className={tela === 'menu' ? 'home-content' : 'content-panel'}
+        className={
+          tela === 'menu'
+            ? 'home-content'
+            : tela === 'redes'
+              ? 'content-panel content-panel--social'
+              : 'content-panel'
+        }
         aria-labelledby="titulo-pagina"
       >
         {tela === 'menu' ? (
@@ -91,16 +125,18 @@ function App() {
           </>
         ) : (
           <>
-            <h1 id="titulo-pagina">{titulos[tela]}</h1>
+            {tela !== 'redes' && <h1 id="titulo-pagina">{titulos[tela]}</h1>}
 
             {tela === 'sobre' && <About />}
             {tela === 'projetos' && <Projects />}
             {tela === 'skills' && <Skills />}
-            {tela === 'redes' && <SocialLinks />}
+            {tela === 'redes' && <SocialLinks onVoltar={() => setTela('menu')} />}
 
-            <button type="button" onClick={() => setTela('menu')}>
-              ← Voltar ao menu
-            </button>
+            {tela !== 'redes' && (
+              <button type="button" onClick={() => setTela('menu')}>
+                ← Voltar ao menu
+              </button>
+            )}
           </>
         )}
       </section>

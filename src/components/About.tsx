@@ -5,7 +5,7 @@ function About() {
       <h2 id="titulo-sobre">Um pouco sobre mim</h2>
 
       <p>
-        Olá! Eu sou Nicolas Gonçalves, também conhecido como Yorih nas redes sociais.
+        Olá! Eu sou Nicolas Gonçalves de Souza, também conhecido como Yorih nas redes sociais.
       </p>
 
       <p>
