@@ -1,10 +1,22 @@
 function About() {
   return (
 
-    <section>
-      <h2>SOBRE</h2>
-      <p>Olá, eu sou Nicolas Gonçalves e uso Yorih como apelido nas redes sociais. Sou Desenvolvedor Full Stack e estudante de Análise e Desenvolvimento de Sistemas (UNIUBE).
-        Sou apaixonado por tecnologia, computadores e jogos. Curioso por Inteligência Artificial, estou sempre buscando aprender, evoluir e transformar ideias em projetos reais.
+    <section aria-labelledby="titulo-sobre">
+      <h2 id="titulo-sobre">Um pouco sobre mim</h2>
+
+      <p>
+        Olá! Eu sou Nicolas Gonçalves, também conhecido como Yorih nas redes sociais.
+      </p>
+
+      <p>
+        Estudo Análise e Desenvolvimento de Sistemas na UNIUBE e estou construindo
+        minha trajetória como desenvolvedor. Gosto de tecnologia, computadores e
+        jogos.
+      </p>
+
+      <p>
+        Tenho curiosidade por inteligência artificial e automação, e quero continuar
+        aprendendo e transformando ideias em projetos reais.
       </p>
     </section>
 

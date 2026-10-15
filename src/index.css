@@ -1,0 +1,216 @@
+/* Cores, tipografia e opções visuais compartilhadas */
+:root {
+  font-family: "Segoe UI", sans-serif;
+  color: #f4f4f5;
+  background-color: #0d1018;
+  color-scheme: dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --cor-fundo: #0d1018;
+  --cor-texto: #f4f4f5;
+  --cor-texto-secundario: #c0c6d4;
+  --cor-destaque: #79e2d2;
+  --cor-destaque-hover: #a4f5e8;
+  --cor-borda: #384153;
+  --cor-painel: #151a25;
+}
+
+/* Faz o tamanho total incluir padding e bordas */
+* {
+  box-sizing: border-box;
+}
+
+/* Define o fundo e remove a margem padrão do navegador */
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--cor-fundo);
+}
+
+/* Mantém o aplicativo com pelo menos a altura da janela */
+#root {
+  min-height: 100vh;
+}
+
+/* Usa a mesma fonte nos controles */
+button {
+  font: inherit;
+}
+
+/* Deixa visível o foco ao navegar pelo teclado */
+button:focus-visible {
+  outline: 3px solid var(--cor-destaque);
+  outline-offset: 5px;
+}
+
+/* Centraliza o conteúdo inicial nos dois eixos da tela */
+.home-screen {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  margin: 0;
+  padding: 2rem;
+  place-items: center;
+
+  /* Grade discreta para lembrar um cenário de jogo 2D */
+  background-color: var(--cor-fundo);
+  background-image:
+    linear-gradient(rgb(121 226 210 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(121 226 210 / 4%) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Limita a largura e centraliza nome, frase e navegação */
+.home-content {
+  width: min(100%, 58rem);
+  text-align: center;
+}
+
+/* Cabeçalho da apresentação */
+.hero-header {
+  margin: 0;
+}
+
+/* Nome em fonte monoespaçada e sombra em blocos, como pixels */
+.hero-name {
+  margin: 0;
+  color: var(--cor-texto);
+  font-family: "Courier New", monospace;
+  font-size: clamp(1.45rem, 7.8vw, 4rem);
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  text-shadow: 4px 4px 0 #176b70;
+}
+
+/* Formatação da citação */
+.hero-quote blockquote {
+  max-width: 48rem;
+  margin: 2rem auto 0;
+}
+
+.hero-quote p {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: clamp(1rem, 2.4vw, 1.35rem);
+  line-height: 1.8;
+}
+
+.hero-quote cite {
+  display: block;
+  margin-top: 0.8rem;
+  color: var(--cor-destaque);
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  font-style: normal;
+}
+
+/* Organiza os botões abaixo da citação */
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2.5rem;
+}
+
+/* Botões discretos com bordas retas e sombra em degrau */
+.menu-button,
+.content-panel > button {
+  position: relative;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--cor-borda);
+  border-radius: 0;
+  color: var(--cor-texto-secundario);
+  background-color: rgb(21 26 37 / 85%);
+  box-shadow: 4px 4px 0 #080a10;
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+
+/* Pequeno marcador que aparece ao passar o mouse */
+.menu-button::before {
+  position: absolute;
+  left: -0.75rem;
+  color: var(--cor-destaque);
+  content: "▶";
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.menu-button:hover,
+.content-panel > button:hover {
+  transform: translate(-2px, -2px);
+  border-color: var(--cor-destaque);
+  color: var(--cor-destaque-hover);
+  background-color: #1b2632;
+  box-shadow: 6px 6px 0 #080a10;
+}
+
+.menu-button:hover::before {
+  opacity: 1;
+}
+
+/* Mantém as telas internas legíveis e alinhadas */
+.content-screen {
+  width: min(100% - 3rem, 72rem);
+  min-height: 100vh;
+  margin-inline: auto;
+  padding-block: clamp(3rem, 9vh, 7rem);
+}
+
+.content-panel h1 {
+  margin: 0 0 1.5rem;
+  color: var(--cor-texto);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  line-height: 1.15;
+}
+
+.content-panel h2,
+.content-panel h3 {
+  color: var(--cor-texto);
+  line-height: 1.2;
+}
+
+.content-panel p {
+  color: var(--cor-texto-secundario);
+  line-height: 1.7;
+}
+
+/* Ajustes para celulares */
+@media (max-width: 600px) {
+  .home-screen {
+    padding: 1.25rem;
+  }
+
+  .hero-quote blockquote {
+    margin-top: 1.5rem;
+  }
+
+  .main-nav {
+    gap: 0.7rem;
+    margin-top: 2rem;
+  }
+
+  .menu-button {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .content-screen {
+    width: min(100% - 2rem, 72rem);
+  }
+}
