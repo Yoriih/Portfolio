@@ -29,7 +29,7 @@ function App() {
 
   // Atualiza o ponto da distorção orgânica sem ativá-la sobre o conteúdo.
   function acompanharPonteiro(event: PointerEvent<HTMLElement>) {
-    if ((event.target as HTMLElement).closest('.home-content, .contact-window, .content-panel:not(.content-panel--social)')) return;
+    if ((event.target as HTMLElement).closest('.home-content, .contact-window, .content-panel:not(.content-panel--social):not(.content-panel--skills), .content-panel--skills :is(h1, h2, p, article, button, li)')) return;
 
     const limites = event.currentTarget.getBoundingClientRect();
     const x = ((event.clientX - limites.left) / limites.width) * 100;
@@ -78,6 +78,8 @@ function App() {
             ? 'home-content'
             : tela === 'redes'
               ? 'content-panel content-panel--social'
+              : tela === 'skills'
+                ? 'content-panel content-panel--skills'
               : 'content-panel'
         }
         aria-labelledby="titulo-pagina"

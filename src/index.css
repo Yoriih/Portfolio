@@ -16,7 +16,8 @@
 
 /* Cores, tipografia e opções visuais compartilhadas */
 :root {
-  font-family: "Segoe UI", sans-serif;
+  /* Unifica textos, botões e títulos na fonte pixel art do portfólio. */
+  font-family: "Press Start 2P", "Courier New", monospace;
   color: #f4f0ff;
   background-color: #090612;
   color-scheme: dark;
@@ -119,7 +120,7 @@ button:focus-visible {
   line-height: 1.6;
   white-space: nowrap;
   -webkit-text-stroke: 0.3px rgb(233 213 255 / 45%);
-  text-shadow: 4px 4px 0 #6d28d9, 0 0 5px rgb(233 213 255 / 24%);
+  text-shadow: 4px 4px 0 #6d28d9, 0 0 7px rgb(233 213 255 / 32%);
   animation: title-pixel-glow 3.8s ease-in-out infinite;
 }
 
@@ -344,8 +345,11 @@ button:focus-visible {
 }
 
 .content-panel p {
-  color: var(--cor-texto-secundario);
-  line-height: 1.7;
+  /* Mantém a descrição compacta, com contraste e brilho suficientes no fundo escuro. */
+  color: #f0e8fa;
+  font-size: clamp(0.5rem, 0.9vw, 0.66rem);
+  line-height: 2;
+  text-shadow: 0 0 7px rgb(233 213 255 / 34%);
 }
 
 /* Ajustes para celulares */
@@ -412,8 +416,11 @@ button:focus-visible {
 
 .project-card > ul {
   padding-left: 1.25rem;
-  color: var(--cor-texto-secundario);
-  line-height: 1.7;
+  /* Mantém listas descritivas compactas e tão claras quanto os parágrafos. */
+  color: #f0e8fa;
+  font-size: clamp(0.5rem, 0.9vw, 0.66rem);
+  line-height: 2;
+  text-shadow: 0 0 7px rgb(233 213 255 / 34%);
 }
 
 .project-card li {
@@ -483,6 +490,15 @@ button:focus-visible {
   background-color: rgb(23 16 32 / 94%);
   box-shadow: 8px 8px 0 #04020a;
   animation: screen-enter 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Apresenta habilidades e tecnologias sem outra moldura ao redor das caixas neon. */
+.content-panel--skills {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
 }
 
 /* Anima a entrada dos cartões em sequência, como itens surgindo em uma fase. */
@@ -663,11 +679,12 @@ button:focus-visible {
 .content-panel h2,
 .content-panel h3,
 .content-panel h4 {
-  color: rgb(220 204 242 / 82%);
-  -webkit-text-fill-color: rgb(220 204 242 / 82%);
+  /* Clareia os títulos pixelados sem remover o tom lavanda fumê da identidade. */
+  color: rgb(238 226 252 / 94%);
+  -webkit-text-fill-color: rgb(238 226 252 / 94%);
   font-family: "Press Start 2P", "Courier New", monospace;
-  -webkit-text-stroke: 0.3px rgb(233 213 255 / 45%);
-  text-shadow: 4px 4px 0 #6d28d9, 0 0 5px rgb(233 213 255 / 24%);
+  -webkit-text-stroke: 0.35px rgb(245 230 255 / 62%);
+  text-shadow: 4px 4px 0 #6d28d9, 0 0 9px rgb(233 213 255 / 42%);
   animation: title-pixel-glow 3.8s ease-in-out infinite;
 }
 
@@ -733,7 +750,7 @@ button:focus-visible {
   font-size: clamp(0.42rem, 0.8vw, 0.58rem);
   line-height: 1.6;
   -webkit-text-stroke: 0;
-  text-shadow: 2px 2px 0 #321447;
+  text-shadow: 2px 2px 0 #321447, 0 0 7px rgb(233 213 255 / 30%);
   animation: none;
 }
 
@@ -830,11 +847,11 @@ button:focus-visible {
 
 .social-info h4 {
   margin: 0 0 0.35rem;
-  color: #ead7ff;
-  -webkit-text-fill-color: #ead7ff;
+  color: #f2e6ff;
+  -webkit-text-fill-color: #f2e6ff;
   font-size: 0.72rem;
   line-height: 1.8;
-  text-shadow: 2px 2px 0 #6d28d9, 0 0 9px rgb(192 132 252 / 28%);
+  text-shadow: 2px 2px 0 #6d28d9, 0 0 14px rgb(192 132 252 / 52%);
   animation: none;
 }
 
@@ -866,6 +883,43 @@ button:focus-visible {
   text-align: center;
 }
 
+/* Dá a cada caixa de habilidade uma cor neon própria, mantendo o interior roxo e escuro. */
+.skill-groups article:nth-child(1) { --skill-neon: #36e8ff; }
+.skill-groups article:nth-child(2) { --skill-neon: #ff4fc8; }
+.skill-groups article:nth-child(3) { --skill-neon: #ffc84a; }
+.skill-groups article:nth-child(4) { --skill-neon: #68ef82; }
+.skill-groups article:nth-child(5) { --skill-neon: #b57aff; }
+
+.skill-groups article {
+  border-color: var(--skill-neon, var(--cor-borda));
+  background-color: #090612;
+  background-image:
+    linear-gradient(45deg, rgb(255 255 255 / 2.5%) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 2.5%) 75%),
+    linear-gradient(45deg, rgb(255 255 255 / 2.5%) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 2.5%) 75%);
+  background-position: 0 0, 8px 8px;
+  background-size: 16px 16px;
+  box-shadow: 0 0 7px var(--skill-neon, var(--cor-borda)), 0 0 18px color-mix(in srgb, var(--skill-neon, var(--cor-borda)) 24%, transparent), 4px 4px 0 #04020a;
+}
+
+/* Destaca cada categoria com a mesma cor neon de sua moldura. */
+.skill-groups article h3 {
+  color: var(--skill-neon, var(--cor-destaque));
+  -webkit-text-fill-color: var(--skill-neon, var(--cor-destaque));
+  text-shadow: 2px 2px 0 #321447, 0 0 15px color-mix(in srgb, var(--skill-neon, var(--cor-destaque)) 58%, transparent);
+  animation: none;
+}
+
+.skill-groups article li {
+  border-color: color-mix(in srgb, var(--skill-neon, var(--cor-borda)) 58%, transparent);
+  color: var(--skill-neon, var(--cor-destaque));
+}
+
+/* Mantém a borda neon acesa ao destacar uma caixa com o mouse. */
+.skill-groups article:hover {
+  border-color: var(--skill-neon, var(--cor-destaque));
+  box-shadow: 0 0 12px var(--skill-neon, var(--cor-destaque)), 0 0 26px color-mix(in srgb, var(--skill-neon, var(--cor-destaque)) 38%, transparent), 8px 8px 0 #04020a;
+}
+
 /* Mantém o retorno ao menu dentro da janela, como o botão de confirmação da referência. */
 .contact-back-button {
   display: block;
@@ -886,6 +940,11 @@ button:focus-visible {
 /* Ativa a lente somente sobre o fundo livre, sem cobrir o conteúdo. */
 @media (hover: hover) and (pointer: fine) {
   .content-screen:hover:not(:has(.content-panel:hover))::before {
+    opacity: 1;
+  }
+
+  /* Mostra a cor do cenário nos espaços entre os elementos da página de habilidades. */
+  .content-screen:has(.content-panel--skills):hover:not(:has(.content-panel--skills :is(h1, h2, p, article, button, li):hover))::before {
     opacity: 1;
   }
 
@@ -915,8 +974,8 @@ button:focus-visible {
 
 /* Alterna a sombra em passos duros para imitar o brilho de sprites pixelados. */
 @keyframes title-pixel-glow {
-  0%, 100% { text-shadow: 4px 4px 0 #6d28d9, 0 0 5px rgb(233 213 255 / 22%), 0 0 14px rgb(192 132 252 / 12%); }
-  50% { text-shadow: 4px 4px 0 #6d28d9, 0 0 12px rgb(233 213 255 / 42%), 0 0 28px rgb(192 132 252 / 22%); }
+  0%, 100% { text-shadow: 4px 4px 0 #6d28d9, 0 0 9px rgb(233 213 255 / 42%), 0 0 20px rgb(192 132 252 / 24%); }
+  50% { text-shadow: 4px 4px 0 #6d28d9, 0 0 17px rgb(233 213 255 / 68%), 0 0 38px rgb(192 132 252 / 40%); }
 }
 
 /* Faz cada letra subir e retornar suavemente à posição original. */

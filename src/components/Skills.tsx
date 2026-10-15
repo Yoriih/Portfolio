@@ -24,8 +24,12 @@ const gruposDeHabilidades: GrupoDeHabilidades[] = [
   {
     titulo: 'Ferramentas e versionamento',
     descricao: 'Ferramentas para editar código e acompanhar as mudanças nos projetos.',
-    
     tecnologias: ['Git', 'GitHub', 'Visual Studio Code'],
+  },
+  {
+    titulo: 'Manutenção e formatação',
+    descricao: 'Experiência com formatação e montagem de computadores e manutenção de equipamentos.',
+    tecnologias: ['Notebooks', 'Desktops'],
   },
 ];
 
