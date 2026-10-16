@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 type Projeto = { // Define a estrutura do projeto.
   nome: string;
   descricao: string;
@@ -23,59 +25,115 @@ const projetos: Projeto[] = [
 ];
 
 function Projects() { // Componente que exibe a lista de projetos.
+  const [indiceSelecionado, setIndiceSelecionado] = useState(0);
+  // Mantém os projetos em ordem e deixa espaços livres como cartões de próximos projetos.
+  const projetoSelecionado = projetos[indiceSelecionado];
+  const cartasVisiveis = [-1, 0, 1].map((posicao) => {
+    const indice = indiceSelecionado + posicao;
+    return { projeto: projetos[indice] ?? null, indice, posicao };
+  });
+
+  function navegarCarrossel(direcao: number) {
+    setIndiceSelecionado((atual) => Math.max(0, Math.min(projetos.length - 1, atual + direcao)));
+  }
+
   return (
-    <section aria-labelledby="titulo-projetos">
-      <h2 id="titulo-projetos">Projetos</h2>
+    <section className="projects-section" aria-label="Projetos do portfólio">
+      <div className="project-carousel" aria-label="Carrossel de projetos">
+        <button
+          className="carousel-arrow carousel-arrow--previous"
+          type="button"
+          aria-label="Projeto anterior"
+          disabled={indiceSelecionado === 0}
+          onClick={() => navegarCarrossel(-1)}
+        >
+          ←
+        </button>
 
-      <ul className="project-list">
-        {projetos.map((projeto) => (
-          <li key={projeto.nome}>
-            <article className="project-card">
+        <div className="project-card-rail" aria-live="polite">
+          {cartasVisiveis.map(({ projeto, indice, posicao }) => projeto ? (
+            <button
+              key={`${projeto.nome}-${indice}`}
+              className={`project-ticket ${posicao === 0 ? 'project-ticket--active' : 'project-ticket--side'} project-ticket--${posicao < 0 ? 'previous' : posicao > 0 ? 'next' : 'selected'}`}
+              type="button"
+              aria-pressed={posicao === 0}
+              onClick={() => setIndiceSelecionado(indice)}
+            >
+              <span className="project-ticket-label">{projeto.nome}</span>
+              <span className="project-ticket-status">{projeto.status}</span>
+              <span className="project-ticket-prompt">
+                {posicao === 0 ? 'Em foco' : 'Selecionar projeto'}
+              </span>
+            </button>
+          ) : (
+            <div
+              key={`coming-${posicao}`}
+              className={`project-ticket project-ticket--side project-ticket--coming project-ticket--${posicao < 0 ? 'previous' : 'next'}`}
+              aria-label="Novo projeto em breve"
+            >
+              <span className="project-ticket-label">IS COMING</span>
+              <span className="project-ticket-status">?????</span>
+              <span className="project-ticket-prompt">??? / ??? / ???</span>
+            </div>
+          ))}
+        </div>
 
-              <h3>{projeto.nome}</h3>
-              <p>{projeto.descricao}</p>
-              <p>
-                <strong>Status:</strong> {projeto.status}
-              </p>
+        <button
+          className="carousel-arrow carousel-arrow--next"
+          type="button"
+          aria-label="Próximo projeto"
+          disabled={indiceSelecionado === projetos.length - 1}
+          onClick={() => navegarCarrossel(1)}
+        >
+          →
+        </button>
+      </div>
 
-              <h4>Tecnologias</h4>
-              <ul>
-                {projeto.tecnologias.map((tecnologia) => (
-                  <li key={tecnologia}>{tecnologia}</li>
-                ))}
-              </ul>
+      <article className="project-card project-detail" aria-live="polite">
+        <h3>{projetoSelecionado.nome}</h3>
+        <p>{projetoSelecionado.descricao}</p>
+        <p><strong>Status:</strong> {projetoSelecionado.status}</p>
 
-              <h4>Funcionalidades</h4>
-              <ul>
-                {projeto.funcionalidades.map((funcionalidade) => (
-                  <li key={funcionalidade}>{funcionalidade}</li>
-                ))}
-              </ul>
+        <div className="project-detail-columns">
+          <section>
+            <h4>Tecnologias</h4>
+            <ul>
+              {projetoSelecionado.tecnologias.map((tecnologia) => (
+                <li key={tecnologia}>{tecnologia}</li>
+              ))}
+            </ul>
+          </section>
 
-              <div className="project-links">
-                <a
-                  className="project-link"
-                  href={projeto.repositorio}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ver código-fonte ↗
-                </a>
+          <section>
+            <h4>Funcionalidades</h4>
+            <ul>
+              {projetoSelecionado.funcionalidades.map((funcionalidade) => (
+                <li key={funcionalidade}>{funcionalidade}</li>
+              ))}
+            </ul>
+          </section>
+        </div>
 
-                <a
-                  className="project-link"
-                  href={projeto.link}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ver projeto ↗
-                </a>
-              </div>
+        <div className="project-links">
+          <a
+            className="project-link project-link--source"
+            href={projetoSelecionado.repositorio}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Ver código-fonte ↗
+          </a>
 
-            </article>
-          </li>
-        ))}
-      </ul>
+          <a
+            className="project-link project-link--live"
+            href={projetoSelecionado.link}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Ver projeto ↗
+          </a>
+        </div>
+      </article>
     </section>
   );
 }

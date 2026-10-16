@@ -10,7 +10,7 @@ type Tela = 'menu' | 'sobre' | 'projetos' | 'redes' | 'skills';
 
 const titulos: Record<Tela, string> = {
   menu: 'Portfólio',
-  sobre: 'Sobre mim',
+  sobre: 'Um pouco sobre mim',
   projetos: 'Projetos',
   redes: 'Redes sociais',
   skills: 'Habilidades',
@@ -73,6 +73,7 @@ function App() {
         </defs>
       </svg>
       <section
+        key={tela}
         className={
           tela === 'menu'
             ? 'home-content'
@@ -80,7 +81,11 @@ function App() {
               ? 'content-panel content-panel--social'
               : tela === 'skills'
                 ? 'content-panel content-panel--skills'
-              : 'content-panel'
+                : tela === 'sobre'
+                  ? 'content-panel content-panel--about'
+                  : tela === 'projetos'
+                    ? 'content-panel content-panel--projects'
+                    : 'content-panel'
         }
         aria-labelledby="titulo-pagina"
       >
@@ -112,7 +117,7 @@ function App() {
                 type="button"
                 onClick={() => setTela('redes')}
               >
-                Redes sociais
+                Redes
               </button>
 
               <button //Skills
@@ -127,15 +132,23 @@ function App() {
           </>
         ) : (
           <>
-            {tela !== 'redes' && <h1 id="titulo-pagina">{titulos[tela]}</h1>}
+            {tela !== 'redes' && tela !== 'skills' && <h1 id="titulo-pagina">{titulos[tela]}</h1>}
 
-            {tela === 'sobre' && <About />}
+            {tela === 'sobre' && (
+              <About
+                onVoltar={() => setTela('menu')}
+              />
+            )}
             {tela === 'projetos' && <Projects />}
             {tela === 'skills' && <Skills />}
             {tela === 'redes' && <SocialLinks onVoltar={() => setTela('menu')} />}
 
-            {tela !== 'redes' && (
-              <button type="button" onClick={() => setTela('menu')}>
+            {tela !== 'redes' && tela !== 'sobre' && (
+              <button
+                className={`content-back-button content-back-button--${tela}`}
+                type="button"
+                onClick={() => setTela('menu')}
+              >
                 ← Voltar ao menu
               </button>
             )}

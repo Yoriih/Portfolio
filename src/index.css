@@ -192,12 +192,17 @@ button:focus-visible {
 /* Organiza os botões abaixo da citação */
 .main-nav {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.8rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: min(100%, 17rem);
+  margin-inline: auto;
   margin-top: 2.5rem;
   animation: screen-enter 950ms 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* Mantém todos os botões do menu com a mesma largura em qualquer resolução. */
+.main-nav .menu-button { width: 100%; }
 
 /* Botões discretos com bordas retas e sombra em degrau */
 .menu-button,
@@ -352,6 +357,61 @@ button:focus-visible {
   text-shadow: 0 0 7px rgb(233 213 255 / 34%);
 }
 
+/* Dá um pouco mais de presença à biografia sem alterar descrições das outras telas. */
+.about-copy p {
+  /* Usa uma fonte de leitura confortável no texto longo, preservando os elementos gamer. */
+  color: #f0e8fa;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  line-height: 1.8;
+  text-shadow: 0 0 7px rgb(233 213 255 / 30%);
+}
+
+/* Mantém atalhos da biografia alinhados e visualmente coerentes com os controles neon. */
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin: 2.5rem 0 1.25rem;
+}
+
+.about-action {
+  display: inline-flex;
+  position: relative;
+  flex: 0 1 auto;
+  max-width: 100%;
+  min-height: 2.8rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 0.9rem;
+  border: 2px solid color-mix(in srgb, var(--item-neon) 78%, transparent);
+  border-radius: 7px;
+  color: var(--item-neon);
+  background: #171020;
+  box-shadow: 4px 4px 0 #04020a;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.54rem;
+  text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.about-action--resume { --item-neon: #ff4fc8; }
+.about-action--back { --item-neon: #ffc84a; margin-left: auto; }
+
+.about-action:hover {
+  transform: translate(-2px, -2px);
+  background: #241632;
+  box-shadow: 6px 6px 0 #04020a, 0 0 14px color-mix(in srgb, var(--item-neon) 42%, transparent);
+}
+
+.about-action:focus-visible {
+  outline: 3px solid var(--item-neon);
+  outline-offset: 4px;
+}
+
 /* Ajustes para celulares */
 @media (max-width: 600px) {
   .home-screen {
@@ -363,7 +423,7 @@ button:focus-visible {
   }
 
   .main-nav {
-    gap: 0.7rem;
+    gap: 0.9rem;
     margin-top: 2rem;
   }
 
@@ -421,6 +481,16 @@ button:focus-visible {
   font-size: clamp(0.5rem, 0.9vw, 0.66rem);
   line-height: 2;
   text-shadow: 0 0 7px rgb(233 213 255 / 34%);
+}
+
+/* Usa tipografia confortável e lavanda fumê para descrições e listas dos projetos. */
+.project-card > p,
+.project-card > ul {
+  color: #e6dced;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.8;
+  text-shadow: 0 0 7px rgb(233 213 255 / 30%);
 }
 
 .project-card li {
@@ -499,6 +569,23 @@ button:focus-visible {
   background: transparent;
   box-shadow: none;
   animation: none;
+}
+
+/* Continua o ciclo neon nas molduras das páginas Sobre e Projetos. */
+.content-panel--about { --page-neon: #36e8ff; }
+.content-panel--projects { --page-neon: #ff4fc8; }
+.content-panel--about,
+.content-panel--projects {
+  border-color: color-mix(in srgb, var(--page-neon) 78%, var(--cor-borda));
+}
+
+.content-panel--about > h1,
+.content-panel--projects > h1 {
+  -webkit-text-stroke-color: color-mix(in srgb, var(--page-neon) 65%, #f5e6ff);
+}
+
+.content-panel--projects section > h2::after {
+  background-color: var(--page-neon);
 }
 
 /* Anima a entrada dos cartões em sequência, como itens surgindo em uma fase. */
@@ -920,6 +1007,261 @@ button:focus-visible {
   box-shadow: 0 0 12px var(--skill-neon, var(--cor-destaque)), 0 0 26px color-mix(in srgb, var(--skill-neon, var(--cor-destaque)) 38%, transparent), 8px 8px 0 #04020a;
 }
 
+/* Alterna a paleta arcade nos botões do menu sem colorir o nome, a frase ou o fundo. */
+.main-nav .menu-button:nth-child(5n + 1) { --item-neon: #36e8ff; }
+.main-nav .menu-button:nth-child(5n + 2) { --item-neon: #ff4fc8; }
+.main-nav .menu-button:nth-child(5n + 3) { --item-neon: #ffc84a; }
+.main-nav .menu-button:nth-child(5n + 4) { --item-neon: #68ef82; }
+.main-nav .menu-button:nth-child(5n + 5) { --item-neon: #b57aff; }
+
+/* Dá espaço às ações e afasta o retorno para as sombras pixeladas não se encostarem. */
+.about-actions { row-gap: 1rem; }
+.content-back-button { margin-top: 0.75rem; }
+
+/* Repete o ciclo de cores nos cartões e nas ações das páginas internas. */
+.project-list > li:nth-child(5n + 1) { --item-neon: #36e8ff; }
+.project-list > li:nth-child(5n + 2) { --item-neon: #ff4fc8; }
+.project-list > li:nth-child(5n + 3) { --item-neon: #ffc84a; }
+.project-list > li:nth-child(5n + 4) { --item-neon: #68ef82; }
+.project-list > li:nth-child(5n + 5) { --item-neon: #b57aff; }
+.social-list > li:nth-child(5n + 1) { --item-neon: #36e8ff; }
+.social-list > li:nth-child(5n + 2) { --item-neon: #ff4fc8; }
+.social-list > li:nth-child(5n + 3) { --item-neon: #ffc84a; }
+.social-list > li:nth-child(5n + 4) { --item-neon: #68ef82; }
+.social-list > li:nth-child(5n + 5) { --item-neon: #b57aff; }
+
+.content-back-button--sobre,
+.contact-back-button { --item-neon: #36e8ff; }
+.content-back-button--projetos { --item-neon: #ffc84a; }
+.content-back-button--redes { --item-neon: #ffc84a; }
+.content-back-button--skills { --item-neon: #68ef82; }
+
+.main-nav .menu-button,
+.content-panel > .content-back-button,
+.contact-back-button,
+.project-link,
+.social-card a {
+  border-color: color-mix(in srgb, var(--item-neon, var(--cor-borda)) 78%, transparent);
+  color: var(--item-neon, var(--cor-texto-secundario));
+}
+
+.project-card,
+.social-card {
+  border-color: color-mix(in srgb, var(--item-neon, var(--cor-borda)) 72%, transparent);
+}
+
+.project-card h3,
+.social-info h4 {
+  color: var(--item-neon, var(--cor-destaque));
+  -webkit-text-fill-color: var(--item-neon, var(--cor-destaque));
+  text-shadow: 2px 2px 0 #321447, 0 0 12px color-mix(in srgb, var(--item-neon, var(--cor-destaque)) 48%, transparent);
+}
+
+.social-icon {
+  border-color: var(--item-neon, var(--cor-destaque));
+  background-color: color-mix(in srgb, var(--item-neon, var(--cor-destaque)) 48%, #241632);
+}
+
+.main-nav .menu-button:hover,
+.content-panel > .content-back-button:hover,
+.contact-back-button:hover,
+.project-link:hover,
+.social-card a:hover {
+  border-color: var(--item-neon, var(--cor-destaque));
+  color: var(--item-neon, var(--cor-destaque-hover));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--item-neon, var(--cor-destaque)) 42%, transparent), 5px 5px 0 #04020a;
+}
+
+.main-nav .menu-button:focus-visible,
+.content-panel > .content-back-button:focus-visible,
+.contact-back-button:focus-visible,
+.project-link:focus-visible,
+.social-card a:focus-visible {
+  outline-color: var(--item-neon, var(--cor-destaque));
+}
+
+/* Mostra um trilho compacto de cartas; a selecionada recebe o foco central. */
+.project-carousel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(0.4rem, 1.5vw, 1rem);
+  margin: 1.5rem 0;
+}
+
+.project-card-rail {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0.8rem;
+  perspective: 900px;
+}
+
+.project-ticket {
+  display: flex;
+  min-width: 0;
+  min-height: 9rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: clamp(0.8rem, 2vw, 1.25rem);
+  border: 2px solid color-mix(in srgb, var(--item-neon) 78%, transparent);
+  border-radius: 7px;
+  color: var(--cor-texto);
+  background: linear-gradient(145deg, #20142d, #0d0914 72%);
+  box-shadow: 4px 4px 0 #04020a;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 220ms ease, box-shadow 220ms ease;
+}
+
+.project-ticket--previous { --item-neon: #36e8ff; }
+.project-ticket--selected { --item-neon: #b57aff; }
+.project-ticket--next { --item-neon: #68ef82; }
+
+.project-ticket--side {
+  opacity: 0.72;
+  transform: scale(0.91) rotateY(5deg);
+}
+
+.project-ticket--side.project-ticket--next { transform: scale(0.91) rotateY(-5deg); }
+
+/* Reserva os cartões vazios para anunciar projetos que ainda serão adicionados. */
+.project-ticket--coming {
+  align-items: center;
+  border-style: dashed;
+  cursor: default;
+  opacity: 0.48;
+  text-align: center;
+}
+
+.project-ticket--coming:hover {
+  opacity: 0.62;
+  transform: none;
+  box-shadow: 4px 4px 0 #04020a;
+}
+
+.project-ticket--active {
+  z-index: 1;
+  border-color: var(--item-neon);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--item-neon) 36%, transparent), 6px 6px 0 #04020a;
+}
+
+.project-ticket:hover,
+.project-ticket:focus-visible {
+  opacity: 1;
+  transform: translateY(-5px) scale(1.02);
+  outline-color: var(--item-neon);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--item-neon) 48%, transparent), 7px 7px 0 #04020a;
+}
+
+.project-ticket-label {
+  color: var(--item-neon);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(0.48rem, 0.75vw, 0.65rem);
+  line-height: 1.8;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--item-neon) 52%, transparent);
+}
+
+.project-ticket-status,
+.project-ticket-prompt {
+  color: #ded4e8;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.project-ticket-prompt {
+  color: color-mix(in srgb, var(--item-neon) 82%, #ffffff);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.42rem;
+}
+
+.carousel-arrow {
+  --item-neon: #ff4fc8;
+  width: 2.6rem;
+  height: 2.8rem;
+  border: 2px solid var(--item-neon);
+  border-radius: 7px;
+  color: var(--item-neon);
+  background: #130d1b;
+  box-shadow: 3px 3px 0 #04020a;
+  cursor: pointer;
+  font: inherit;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.carousel-arrow--previous { --item-neon: #36e8ff; }
+.carousel-arrow--next { --item-neon: #68ef82; }
+
+.carousel-arrow:hover:not(:disabled),
+.carousel-arrow:focus-visible {
+  transform: translateY(-2px);
+  outline-color: var(--item-neon);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--item-neon) 36%, transparent), 4px 4px 0 #04020a;
+}
+
+.carousel-arrow:disabled { cursor: not-allowed; opacity: 0.38; }
+
+/* Separa a leitura completa do projeto do trilho de cartões. */
+.project-detail {
+  --item-neon: #36e8ff;
+  margin-top: 1.5rem;
+  border-color: color-mix(in srgb, var(--item-neon) 78%, transparent);
+}
+
+.project-detail-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.project-detail-columns section:nth-child(1) { --item-neon: #ffc84a; }
+.project-detail-columns section:nth-child(2) { --item-neon: #68ef82; }
+
+.project-detail-columns h4 {
+  color: var(--item-neon);
+  -webkit-text-fill-color: var(--item-neon);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--item-neon) 45%, transparent);
+  animation: none;
+}
+
+/* Mantém as listas técnicas menores e fáceis de ler, seguindo o texto da página Sobre. */
+.project-detail-columns ul {
+  padding-left: 1.25rem;
+  color: #e6dced;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-shadow: 0 0 7px rgb(233 213 255 / 30%);
+}
+
+.project-detail-columns li { margin-block: 0.25rem; }
+
+.project-link--source { --item-neon: #ff4fc8; }
+.project-link--live { --item-neon: #b57aff; }
+
+.carousel-arrow:focus-visible {
+  outline: 3px solid var(--item-neon);
+  outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .project-card-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-ticket--previous { display: none; }
+  .project-ticket { min-height: 7rem; padding: 0.65rem; }
+  .project-ticket-label { overflow-wrap: anywhere; }
+  .project-ticket-status { font-size: 0.72rem; }
+  .project-ticket-prompt { font-size: 0.36rem; }
+  .project-detail-columns { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
+  .project-links { flex-direction: row; }
+}
+
+/* Mantém o brilho variável por categoria já usado nos cartões de habilidades. */
+
 /* Mantém o retorno ao menu dentro da janela, como o botão de confirmação da referência. */
 .contact-back-button {
   display: block;
@@ -964,6 +1306,12 @@ button:focus-visible {
   from { opacity: 0; transform: translateY(22px) scale(0.975); filter: blur(5px); }
   70% { opacity: 1; filter: blur(0); }
   to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+/* Deixa a entrada das telas mais longa e fluida quando o menu troca de seção. */
+.home-content,
+.content-panel {
+  animation: screen-enter 850ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Os cartões surgem de baixo com um toque de escala, sem perder nitidez final. */
@@ -1022,13 +1370,16 @@ button:focus-visible {
   }
   /* Empilha os botões e mantém uma área de toque ampla e centralizada. */
   .main-nav {
+    /* Centraliza o menu mobile em uma coluna de botões com a mesma largura. */
     flex-direction: column;
     align-items: center;
     gap: 0.65rem;
+    width: min(100%, 17rem);
+    margin-inline: auto;
     margin-top: 1.5rem;
   }
   .menu-button {
-    width: min(100%, 17rem);
+    width: 100%;
     min-height: 44px;
     font-size: 0.62rem;
   }
@@ -1036,6 +1387,285 @@ button:focus-visible {
   .project-card,
   .skill-groups article,
   .social-card { padding: 1rem; }
+}
+
+/* Transforma as habilidades em um carrossel de títulos, deixando os detalhes sob demanda. */
+.skills-carousel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(0.45rem, 1.4vw, 1rem);
+  margin-block: 2rem 1.25rem;
+}
+
+.skill-groups {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 0;
+  perspective: 900px;
+}
+
+.skill-ticket {
+  --skill-neon: #b57aff;
+  display: flex;
+  min-width: 0;
+  min-height: 8.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--skill-neon);
+  border-radius: 7px;
+  color: var(--skill-neon);
+  background-color: #090612;
+  background-image:
+    linear-gradient(45deg, rgb(255 255 255 / 2.5%) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 2.5%) 75%),
+    linear-gradient(45deg, rgb(255 255 255 / 2.5%) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 2.5%) 75%);
+  background-position: 0 0, 8px 8px;
+  background-size: 16px 16px;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--skill-neon) 42%, transparent), 5px 5px 0 #04020a;
+  cursor: pointer;
+  font: inherit;
+  text-align: center;
+  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 220ms ease, box-shadow 220ms ease;
+}
+
+.skill-ticket--previous { transform: scale(0.91) rotateY(5deg); opacity: 0.72; }
+.skill-ticket--center { }
+.skill-ticket--next { transform: scale(0.91) rotateY(-5deg); opacity: 0.72; }
+
+.skill-ticket:hover,
+.skill-ticket:focus-visible,
+.skill-ticket--selected {
+  opacity: 1;
+  transform: translateY(-0.45rem) scale(1.02);
+  outline-color: var(--skill-neon);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--skill-neon) 58%, transparent), 7px 7px 0 #04020a;
+}
+
+.skill-ticket-title {
+  max-width: 100%;
+  color: var(--skill-neon);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(0.48rem, 0.85vw, 0.68rem);
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--skill-neon) 60%, transparent);
+}
+
+.skill-ticket-prompt {
+  color: #ded4e8;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.42rem;
+  line-height: 1.8;
+}
+
+.skills-carousel-arrow,
+.skill-details-close {
+  border: 2px solid var(--item-neon, #b57aff);
+  border-radius: 7px;
+  color: var(--item-neon, #b57aff);
+  background: #130d1b;
+  box-shadow: 3px 3px 0 #04020a;
+  cursor: pointer;
+  font: inherit;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.skills-carousel-arrow {
+  width: 2.6rem;
+  height: 2.8rem;
+}
+
+.skills-carousel-arrow--previous { --item-neon: #36e8ff; }
+.skills-carousel-arrow--next { --item-neon: #68ef82; }
+
+.skills-carousel-arrow:hover:not(:disabled),
+.skills-carousel-arrow:focus-visible,
+.skill-details-close:hover,
+.skill-details-close:focus-visible {
+  transform: translateY(-2px);
+  outline-color: var(--item-neon, #b57aff);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--item-neon, #b57aff) 42%, transparent), 4px 4px 0 #04020a;
+}
+
+.skills-carousel-arrow:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+/* Abre o conteúdo abaixo do card selecionado, com uma entrada curta de interface. */
+.skill-details {
+  --skill-neon: #b57aff;
+  margin-top: 0.5rem;
+  padding: 1.25rem;
+  border: 2px solid var(--skill-neon);
+  border-radius: 7px;
+  background: #090612;
+  background-image: linear-gradient(45deg, rgb(255 255 255 / 2.5%) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 2.5%) 75%), linear-gradient(45deg, rgb(255 255 255 / 2.5%) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 2.5%) 75%);
+  background-position: 0 0, 8px 8px;
+  background-size: 16px 16px;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--skill-neon) 34%, transparent), 6px 6px 0 #04020a;
+  animation: skill-detail-reveal 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.skill-details-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.skill-details h3 {
+  margin: 0;
+  color: var(--skill-neon);
+  /* Substitui o preenchimento global dos títulos para acompanhar a borda da categoria. */
+  -webkit-text-fill-color: var(--skill-neon);
+  -webkit-text-stroke: 0.25px color-mix(in srgb, var(--skill-neon) 72%, #ffffff);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(0.58rem, 1.2vw, 0.82rem);
+  line-height: 1.8;
+  text-shadow: 0 0 12px color-mix(in srgb, var(--skill-neon) 62%, transparent);
+}
+
+.skill-details-close {
+  /* O controle de fechar usa a mesma cor do card e da janela aberta. */
+  --item-neon: var(--skill-neon);
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  line-height: 1;
+}
+
+.skill-details p {
+  margin: 1rem 0;
+  color: #e6dced;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  text-shadow: 0 0 7px rgb(233 213 255 / 30%);
+}
+
+.skill-details ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-details li {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--skill-neon) 72%, transparent);
+  border-radius: 7px;
+  color: var(--skill-neon);
+  background: #171020;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.46rem;
+  line-height: 1.8;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--skill-neon) 48%, transparent);
+}
+
+/* Deixa as caixas de habilidades translúcidas, removendo o quadriculado do fundo. */
+.skill-ticket,
+.skill-details {
+  background-color: rgb(9 6 18 / 42%);
+  background-image: none;
+}
+
+@media (max-width: 700px) {
+  .skill-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .skill-ticket--previous { display: none; }
+}
+
+@media (max-width: 480px) {
+  .skill-groups { grid-template-columns: minmax(0, 1fr); }
+  .skill-ticket--next { display: none; }
+  .skill-ticket { min-height: 7rem; }
+}
+
+@keyframes skill-detail-reveal {
+  from { opacity: 0; transform: translateY(-0.7rem) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Cria um céu espacial escuro com pontos de luz em várias escalas para todas as telas. */
+.home-screen,
+.content-screen {
+  background-color: #020208;
+  /* Reaproveita a mesma constelação em escalas diferentes, sem repetir blocos visíveis. */
+  --organic-stars: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 761 503'%3E%3Cg fill='%23f8f6ff'%3E%3Ccircle cx='23' cy='31' r='.7' opacity='.62'/%3E%3Ccircle cx='91' cy='174' r='.9' opacity='.48'/%3E%3Ccircle cx='164' cy='76' r='.6' opacity='.72'/%3E%3Ccircle cx='238' cy='266' r='.8' opacity='.55'/%3E%3Ccircle cx='315' cy='43' r='.65' opacity='.65'/%3E%3Ccircle cx='392' cy='154' r='1' opacity='.42'/%3E%3Ccircle cx='468' cy='314' r='.7' opacity='.7'/%3E%3Ccircle cx='548' cy='92' r='.8' opacity='.5'/%3E%3Ccircle cx='629' cy='228' r='.6' opacity='.66'/%3E%3Ccircle cx='718' cy='381' r='.9' opacity='.44'/%3E%3Ccircle cx='54' cy='429' r='.8' opacity='.58'/%3E%3Ccircle cx='139' cy='352' r='.6' opacity='.74'/%3E%3Ccircle cx='281' cy='446' r='.85' opacity='.48'/%3E%3Ccircle cx='356' cy='365' r='.6' opacity='.7'/%3E%3Ccircle cx='432' cy='472' r='.75' opacity='.56'/%3E%3Ccircle cx='514' cy='247' r='.65' opacity='.72'/%3E%3Ccircle cx='603' cy='461' r='.95' opacity='.4'/%3E%3Ccircle cx='681' cy='126' r='.7' opacity='.6'/%3E%3C/g%3E%3Cg fill='%23c2b7ff'%3E%3Ccircle cx='73' cy='112' r='.55' opacity='.6'/%3E%3Ccircle cx='204' cy='397' r='.7' opacity='.52'/%3E%3Ccircle cx='347' cy='214' r='.55' opacity='.7'/%3E%3Ccircle cx='495' cy='27' r='.6' opacity='.56'/%3E%3Ccircle cx='575' cy='346' r='.7' opacity='.62'/%3E%3Ccircle cx='741' cy='82' r='.55' opacity='.68'/%3E%3C/g%3E%3C/svg%3E");
+  background-image:
+    var(--organic-stars),
+    var(--organic-stars),
+    var(--organic-stars),
+    radial-gradient(ellipse at 16% 18%, rgb(75 42 130 / 14%), transparent 36%),
+    radial-gradient(ellipse at 84% 76%, rgb(35 74 126 / 10%), transparent 38%),
+    radial-gradient(circle at 3% 7%, rgb(255 255 255 / 74%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 11% 31%, rgb(194 183 255 / 58%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 19% 14%, rgb(255 255 255 / 52%) 0 0.55px, transparent 1.2px),
+    radial-gradient(circle at 27% 48%, rgb(220 210 255 / 66%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 34% 22%, rgb(255 255 255 / 58%) 0 0.65px, transparent 1.2px),
+    radial-gradient(circle at 42% 71%, rgb(194 183 255 / 52%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 49% 37%, rgb(255 255 255 / 72%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 56% 11%, rgb(220 210 255 / 48%) 0 0.55px, transparent 1.15px),
+    radial-gradient(circle at 63% 57%, rgb(255 255 255 / 60%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 71% 29%, rgb(194 183 255 / 62%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 78% 78%, rgb(255 255 255 / 50%) 0 0.6px, transparent 1.2px),
+    radial-gradient(circle at 86% 16%, rgb(220 210 255 / 68%) 0 0.75px, transparent 1.35px),
+    radial-gradient(circle at 94% 43%, rgb(255 255 255 / 58%) 0 0.55px, transparent 1.2px),
+    radial-gradient(circle at 7% 84%, rgb(220 210 255 / 48%) 0 0.65px, transparent 1.2px),
+    radial-gradient(circle at 23% 67%, rgb(255 255 255 / 64%) 0 0.75px, transparent 1.3px),
+    radial-gradient(circle at 38% 91%, rgb(194 183 255 / 56%) 0 0.6px, transparent 1.2px),
+    radial-gradient(circle at 53% 83%, rgb(255 255 255 / 50%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 68% 92%, rgb(220 210 255 / 62%) 0 0.65px, transparent 1.25px),
+    radial-gradient(circle at 83% 63%, rgb(255 255 255 / 66%) 0 0.75px, transparent 1.35px),
+    radial-gradient(circle at 97% 88%, rgb(194 183 255 / 54%) 0 0.6px, transparent 1.2px),
+    radial-gradient(circle at 8% 19%, rgb(255 255 255 / 56%) 0 0.55px, transparent 1.15px),
+    radial-gradient(circle at 15% 73%, rgb(220 210 255 / 68%) 0 0.75px, transparent 1.35px),
+    radial-gradient(circle at 29% 8%, rgb(255 255 255 / 64%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 36% 59%, rgb(194 183 255 / 58%) 0 0.6px, transparent 1.2px),
+    radial-gradient(circle at 46% 18%, rgb(255 255 255 / 70%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 52% 94%, rgb(220 210 255 / 54%) 0 0.6px, transparent 1.2px),
+    radial-gradient(circle at 61% 66%, rgb(255 255 255 / 62%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 74% 6%, rgb(194 183 255 / 52%) 0 0.55px, transparent 1.15px),
+    radial-gradient(circle at 88% 34%, rgb(255 255 255 / 72%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 92% 72%, rgb(220 210 255 / 56%) 0 0.65px, transparent 1.25px),
+    radial-gradient(circle at 2% 56%, rgb(194 183 255 / 60%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 18% 92%, rgb(255 255 255 / 50%) 0 0.6px, transparent 1.2px),
+    radial-gradient(circle at 33% 79%, rgb(220 210 255 / 66%) 0 0.75px, transparent 1.35px),
+    radial-gradient(circle at 41% 43%, rgb(255 255 255 / 58%) 0 0.55px, transparent 1.15px),
+    radial-gradient(circle at 58% 49%, rgb(194 183 255 / 64%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 66% 24%, rgb(255 255 255 / 54%) 0 0.6px, transparent 1.2px),
+    radial-gradient(circle at 79% 51%, rgb(220 210 255 / 70%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 91% 96%, rgb(255 255 255 / 58%) 0 0.65px, transparent 1.25px),
+    linear-gradient(180deg, #020208 0%, #070511 52%, #020207 100%);
+  background-size: 100% 100%, 87% 111%, 121% 93%, auto;
+  background-position: 0 0, 19% 11%, -12% 17%, 0 0;
+  background-repeat: no-repeat;
+}
+
+/* Mantém a distorção do hover com uma versão roxa do mesmo céu estrelado. */
+.home-screen::before,
+.content-screen::before {
+  background-color: #03020b;
+  background-image:
+    radial-gradient(ellipse at 18% 18%, rgb(147 51 234 / 28%), transparent 38%),
+    radial-gradient(ellipse at 84% 78%, rgb(37 99 235 / 18%), transparent 36%),
+    radial-gradient(circle at 6% 12%, rgb(233 213 255 / 82%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 18% 48%, rgb(192 132 252 / 68%) 0 0.65px, transparent 1.25px),
+    radial-gradient(circle at 31% 23%, rgb(233 213 255 / 72%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 44% 76%, rgb(192 132 252 / 64%) 0 0.75px, transparent 1.35px),
+    radial-gradient(circle at 57% 35%, rgb(233 213 255 / 76%) 0 0.65px, transparent 1.25px),
+    radial-gradient(circle at 69% 88%, rgb(192 132 252 / 62%) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 82% 17%, rgb(233 213 255 / 78%) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 94% 59%, rgb(192 132 252 / 66%) 0 0.6px, transparent 1.2px),
+    linear-gradient(180deg, #03020b 0%, #120a22 54%, #03020b 100%);
+  background-repeat: no-repeat;
 }
 
 /* Respeita quem prefere reduzir movimento nas configurações do dispositivo. */
