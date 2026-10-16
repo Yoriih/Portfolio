@@ -1,10 +1,10 @@
 # Portfólio | Nicolas Gonçalves de Souza
 
-Portfólio pessoal de **Nicolas Gonçalves de Souza**, também conhecido como **Yorih**.
+Meu Portfólio pessoal, sou **Nicolas Gonçalves de Souza**, também conhecido como **Yorih**.
 
-O projeto apresenta minha trajetória, meus estudos e meus projetos em uma experiência inspirada em jogos 2D pixel art, com identidade dark neon, navegação responsiva e suporte aos idiomas português e inglês.
+Aqui eu apresento um pouco da minha trajetória, meus estudos e meus projetos em uma experiência inspirada em jogos 2D pixel art, com identidade dark neon, navegação responsiva e suporte aos idiomas português e inglês.
 
-## ✨ Destaques
+##  Destaques
 
 - Interface pixel art com tema espacial e neon;
 - Layout responsivo para desktop e dispositivos móveis;
@@ -13,7 +13,7 @@ O projeto apresenta minha trajetória, meus estudos e meus projetos em uma exper
 - Currículo disponível para visualização em uma nova aba;
 - Animações suaves e transições entre as telas.
 
-## 🛠️ Tecnologias
+##  Tecnologias
 
 - React;
 - TypeScript;
@@ -22,7 +22,7 @@ O projeto apresenta minha trajetória, meus estudos e meus projetos em uma exper
 - CSS3;
 - Git e GitHub.
 
-## 🚀 Executando localmente
+##  Executando localmente
 
 ```bash
 git clone https://github.com/Yoriih/Portfolio.git
@@ -43,28 +43,12 @@ Para visualizar a build localmente:
 npm run preview
 ```
 
-## 📁 Estrutura principal
-
-```text
-src/
-├── components/
-│   ├── About.tsx
-│   ├── Header.tsx
-│   ├── Hero.tsx
-│   ├── Projects.tsx
-│   ├── Skills.tsx
-│   └── SocialLinks.tsx
-├── App.tsx
-├── i18n.ts
-└── index.css
-```
-
-## 📫 Contato
+##  Contato
 
 - **GitHub:** [@Yoriih](https://github.com/Yoriih)
 - **LinkedIn:** [/in/yoriih](https://www.linkedin.com/in/yoriih/)
 - **Instagram:** [@ynick_dev](https://www.instagram.com/ynick_dev/)
 
-## 📄 Licença
+##  Licença
 
 Este projeto é pessoal e foi criado para apresentação profissional. O código pode ser consultado para fins de estudo, mas o conteúdo, a identidade visual e os materiais pessoais não devem ser reutilizados sem autorização.
