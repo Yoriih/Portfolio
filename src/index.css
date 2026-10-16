@@ -80,16 +80,6 @@ button:focus-visible {
   margin: 0;
   padding: 2rem;
   place-items: center;
-
-  /* Mantém as luzes e os pixels do cenário em escala de cinza; o hover revela a cópia roxa abaixo. */
-  background-color: var(--cor-fundo);
-  background-image:
-    radial-gradient(ellipse at 18% 18%, rgb(170 170 170 / 27%), transparent 38%),
-    radial-gradient(ellipse at 84% 78%, rgb(125 125 125 / 17%), transparent 36%),
-    radial-gradient(circle, rgb(225 225 225 / 68%) 1.5px, transparent 2px),
-    radial-gradient(circle, rgb(175 175 175 / 58%) 1px, transparent 1.5px),
-    linear-gradient(135deg, #090909 0%, #181818 52%, #080808 100%);
-  background-size: auto, auto, 52px 52px, 79px 79px, auto;
 }
 
 /* Limita a largura e centraliza nome, frase e navegação */
@@ -98,7 +88,6 @@ button:focus-visible {
   z-index: 1;
   width: min(100%, 58rem);
   text-align: center;
-  animation: screen-enter 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Cabeçalho da apresentação */
@@ -262,13 +251,11 @@ button:focus-visible {
 /* Arredonda caixas; as sombras em degraus preservam o visual pixelado. */
 .content-panel,
 .project-card,
-.skill-groups article,
 .social-card,
 .menu-button,
 .content-panel > button,
 .contact-back-button,
-.project-link,
-.skill-groups li {
+.project-link {
   border-radius: 7px;
 }
 
@@ -303,7 +290,7 @@ button:focus-visible {
   overflow: hidden;
 }
 
-/* Faz as telas internas preencherem a janela e mantém o cenário arcade em preto e branco. */
+/* Faz as telas internas preencherem a janela e receberem o cenário espacial definido adiante. */
 .content-screen {
   position: relative;
   isolation: isolate;
@@ -313,14 +300,6 @@ button:focus-visible {
   margin: 0;
   padding-block: clamp(3rem, 9vh, 7rem);
   padding-inline: clamp(1rem, 3vw, 2rem);
-  background-color: var(--cor-fundo);
-  background-image:
-    radial-gradient(ellipse at 18% 18%, rgb(170 170 170 / 27%), transparent 38%),
-    radial-gradient(ellipse at 84% 78%, rgb(125 125 125 / 17%), transparent 36%),
-    radial-gradient(circle, rgb(225 225 225 / 68%) 1.5px, transparent 2px),
-    radial-gradient(circle, rgb(175 175 175 / 58%) 1px, transparent 1.5px),
-    linear-gradient(135deg, #090909 0%, #181818 52%, #080808 100%);
-  background-size: auto, auto, 52px 52px, 79px 79px, auto;
 }
 
 .content-panel h1 {
@@ -336,17 +315,6 @@ button:focus-visible {
   color: var(--cor-texto);
   font-family: "Press Start 2P", "Courier New", monospace;
   line-height: 1.2;
-}
-
-/* Mantém títulos compactos porque a fonte pixelada ocupa mais largura. */
-.content-panel > h1 {
-  font-size: clamp(0.9rem, 3.5vw, 2.1rem);
-  line-height: 1.8;
-}
-
-.content-panel section > h2 {
-  font-size: clamp(0.7rem, 1.8vw, 1.05rem);
-  line-height: 2;
 }
 
 .content-panel p {
@@ -438,15 +406,6 @@ button:focus-visible {
   }
 }
 
-.project-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-  gap: 1.25rem;
-  margin: 2rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
 /* Estilo de painel com borda reta e sombra pixelada */
 .project-card {
   display: flex;
@@ -474,18 +433,8 @@ button:focus-visible {
   line-height: 1.8;
 }
 
-.project-card > ul {
-  padding-left: 1.25rem;
-  /* Mantém listas descritivas compactas e tão claras quanto os parágrafos. */
-  color: #f0e8fa;
-  font-size: clamp(0.5rem, 0.9vw, 0.66rem);
-  line-height: 2;
-  text-shadow: 0 0 7px rgb(233 213 255 / 34%);
-}
-
 /* Usa tipografia confortável e lavanda fumê para descrições e listas dos projetos. */
-.project-card > p,
-.project-card > ul {
+.project-card > p {
   color: #e6dced;
   font-family: "Segoe UI", Arial, sans-serif;
   font-size: clamp(0.9rem, 1.1vw, 1rem);
@@ -559,7 +508,6 @@ button:focus-visible {
   border: 2px solid var(--cor-borda);
   background-color: rgb(23 16 32 / 94%);
   box-shadow: 8px 8px 0 #04020a;
-  animation: screen-enter 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Apresenta habilidades e tecnologias sem outra moldura ao redor das caixas neon. */
@@ -584,129 +532,30 @@ button:focus-visible {
   -webkit-text-stroke-color: color-mix(in srgb, var(--page-neon) 65%, #f5e6ff);
 }
 
-.content-panel--projects section > h2::after {
-  background-color: var(--page-neon);
-}
-
 /* Anima a entrada dos cartões em sequência, como itens surgindo em uma fase. */
 .project-card,
-.skill-groups article,
 .social-card {
   animation: card-enter 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.project-list > li:nth-child(2) .project-card,
-.skill-groups article:nth-child(2),
 .social-list > li:nth-child(2) .social-card { animation-delay: 100ms; }
-.project-list > li:nth-child(3) .project-card,
-.skill-groups article:nth-child(3),
 .social-list > li:nth-child(3) .social-card { animation-delay: 200ms; }
-.project-list > li:nth-child(4) .project-card,
-.skill-groups article:nth-child(4),
 .social-list > li:nth-child(4) .social-card { animation-delay: 300ms; }
 
 /* Faz cartões e etiquetas responderem com movimento nítido ao passar o mouse. */
 .project-card,
-.skill-groups article,
-.social-card,
-.skill-groups li {
+.social-card {
   transition: transform 180ms steps(4, end), border-color 180ms ease, box-shadow 180ms steps(4, end);
 }
 
 .project-card:hover,
-.skill-groups article:hover,
 .social-card:hover {
   transform: translate(-5px, -5px);
   border-color: var(--cor-destaque);
   box-shadow: 10px 10px 0 #04020a, 0 0 18px rgb(192 132 252 / 13%);
 }
 
-.skill-groups li:hover {
-  transform: translateY(-3px);
-  border-color: var(--cor-destaque-hover);
-}
-
-/* NOVO: organiza os cartões de habilidades em colunas responsivas. */
-.skill-groups {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-  gap: 1rem;
-  margin-block: 1.5rem;
-}
-
-.skill-groups article,
-.social-card {
-  padding: 1.25rem;
-  border: 2px solid var(--cor-borda);
-  background-color: #090612;
-  box-shadow: 4px 4px 0 #04020a;
-}
-
-.skill-groups article h3,
-.social-card h3 {
-  margin-top: 0;
-  color: var(--cor-destaque);
-  font-family: "Press Start 2P", "Courier New", monospace;
-  font-size: 0.68rem;
-  line-height: 1.8;
-}
-
-/* NOVO: organiza os contatos em cartões e remove os marcadores padrão. */
-.social-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-  padding: 0;
-  list-style: none;
-}
-
-.social-card {
-  height: 100%;
-}
-
-.social-card a {
-  color: var(--cor-destaque);
-  overflow-wrap: anywhere;
-}
-
-.social-card a:hover {
-  color: var(--cor-destaque-hover);
-}
-
-/* NOVO: adapta o espaço interno dos painéis em celulares. */
-@media (max-width: 600px) {
-  .content-panel {
-    padding: 1rem;
-  }
-
-  .skill-groups article,
-  .social-card {
-    padding: 1rem;
-  }
-}
-
-/* NOVO: apresenta cada tecnologia como uma etiqueta de interface. */
-.skill-groups ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  padding: 0;
-  list-style: none;
-}
-
-.skill-groups li {
-  padding: 0.35rem 0.6rem;
-  border: 1px solid var(--cor-borda);
-  color: var(--cor-destaque);
-  background-color: var(--cor-painel);
-  font-family: "Press Start 2P", "Courier New", monospace;
-  font-size: 0.48rem;
-  line-height: 1.8;
-}
-
-/* NOVO: dá aos links sociais aparência de botões do portfólio. */
+/* Dá aos links sociais aparência de botões do portfólio. */
 .social-card a {
   display: inline-flex;
   margin-top: 0.5rem;
@@ -736,7 +585,7 @@ button:focus-visible {
   outline-offset: 4px;
 }
 
-/* NOVO: aproxima os títulos internos do estilo pixelado da tela inicial. */
+/* Aproxima os títulos internos do estilo pixelado da tela inicial. */
 .content-panel > h1 {
   font-family: "Press Start 2P", "Courier New", monospace;
   font-size: clamp(0.9rem, 3.5vw, 2.1rem);
@@ -744,7 +593,7 @@ button:focus-visible {
   line-height: 1.8;
 }
 
-/* NOVO: destaca o título de cada seção com um traço em blocos. */
+/* Destaca o título de cada seção com um traço em blocos. */
 .content-panel section > h2 {
   font-family: "Press Start 2P", "Courier New", monospace;
   font-size: clamp(0.7rem, 1.8vw, 1.05rem);
@@ -970,70 +819,24 @@ button:focus-visible {
   text-align: center;
 }
 
-/* Dá a cada caixa de habilidade uma cor neon própria, mantendo o interior roxo e escuro. */
-.skill-groups article:nth-child(1) { --skill-neon: #36e8ff; }
-.skill-groups article:nth-child(2) { --skill-neon: #ff4fc8; }
-.skill-groups article:nth-child(3) { --skill-neon: #ffc84a; }
-.skill-groups article:nth-child(4) { --skill-neon: #68ef82; }
-.skill-groups article:nth-child(5) { --skill-neon: #b57aff; }
-
-.skill-groups article {
-  border-color: var(--skill-neon, var(--cor-borda));
-  background-color: #090612;
-  background-image:
-    linear-gradient(45deg, rgb(255 255 255 / 2.5%) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 2.5%) 75%),
-    linear-gradient(45deg, rgb(255 255 255 / 2.5%) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 2.5%) 75%);
-  background-position: 0 0, 8px 8px;
-  background-size: 16px 16px;
-  box-shadow: 0 0 7px var(--skill-neon, var(--cor-borda)), 0 0 18px color-mix(in srgb, var(--skill-neon, var(--cor-borda)) 24%, transparent), 4px 4px 0 #04020a;
-}
-
-/* Destaca cada categoria com a mesma cor neon de sua moldura. */
-.skill-groups article h3 {
-  color: var(--skill-neon, var(--cor-destaque));
-  -webkit-text-fill-color: var(--skill-neon, var(--cor-destaque));
-  text-shadow: 2px 2px 0 #321447, 0 0 15px color-mix(in srgb, var(--skill-neon, var(--cor-destaque)) 58%, transparent);
-  animation: none;
-}
-
-.skill-groups article li {
-  border-color: color-mix(in srgb, var(--skill-neon, var(--cor-borda)) 58%, transparent);
-  color: var(--skill-neon, var(--cor-destaque));
-}
-
-/* Mantém a borda neon acesa ao destacar uma caixa com o mouse. */
-.skill-groups article:hover {
-  border-color: var(--skill-neon, var(--cor-destaque));
-  box-shadow: 0 0 12px var(--skill-neon, var(--cor-destaque)), 0 0 26px color-mix(in srgb, var(--skill-neon, var(--cor-destaque)) 38%, transparent), 8px 8px 0 #04020a;
-}
-
 /* Alterna a paleta arcade nos botões do menu sem colorir o nome, a frase ou o fundo. */
 .main-nav .menu-button:nth-child(5n + 1) { --item-neon: #36e8ff; }
 .main-nav .menu-button:nth-child(5n + 2) { --item-neon: #ff4fc8; }
 .main-nav .menu-button:nth-child(5n + 3) { --item-neon: #ffc84a; }
 .main-nav .menu-button:nth-child(5n + 4) { --item-neon: #68ef82; }
-.main-nav .menu-button:nth-child(5n + 5) { --item-neon: #b57aff; }
 
 /* Dá espaço às ações e afasta o retorno para as sombras pixeladas não se encostarem. */
 .about-actions { row-gap: 1rem; }
 .content-back-button { margin-top: 0.75rem; }
 
-/* Repete o ciclo de cores nos cartões e nas ações das páginas internas. */
-.project-list > li:nth-child(5n + 1) { --item-neon: #36e8ff; }
-.project-list > li:nth-child(5n + 2) { --item-neon: #ff4fc8; }
-.project-list > li:nth-child(5n + 3) { --item-neon: #ffc84a; }
-.project-list > li:nth-child(5n + 4) { --item-neon: #68ef82; }
-.project-list > li:nth-child(5n + 5) { --item-neon: #b57aff; }
+/* Repete o ciclo de cores nas ações das páginas internas. */
 .social-list > li:nth-child(5n + 1) { --item-neon: #36e8ff; }
 .social-list > li:nth-child(5n + 2) { --item-neon: #ff4fc8; }
 .social-list > li:nth-child(5n + 3) { --item-neon: #ffc84a; }
 .social-list > li:nth-child(5n + 4) { --item-neon: #68ef82; }
-.social-list > li:nth-child(5n + 5) { --item-neon: #b57aff; }
 
-.content-back-button--sobre,
 .contact-back-button { --item-neon: #36e8ff; }
 .content-back-button--projetos { --item-neon: #ffc84a; }
-.content-back-button--redes { --item-neon: #ffc84a; }
 .content-back-button--skills { --item-neon: #68ef82; }
 
 .main-nav .menu-button,
@@ -1385,7 +1188,6 @@ button:focus-visible {
   }
   .content-panel { box-shadow: 5px 5px 0 #04020a; }
   .project-card,
-  .skill-groups article,
   .social-card { padding: 1rem; }
 }
 
@@ -1434,7 +1236,6 @@ button:focus-visible {
 }
 
 .skill-ticket--previous { transform: scale(0.91) rotateY(5deg); opacity: 0.72; }
-.skill-ticket--center { }
 .skill-ticket--next { transform: scale(0.91) rotateY(-5deg); opacity: 0.72; }
 
 .skill-ticket:hover,

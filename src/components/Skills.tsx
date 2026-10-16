@@ -52,7 +52,7 @@ function Skills({ textos }: { textos: Textos['skills'] }) {
           {cartasVisiveis.map(({ grupo, indice, posicao }) => (
             <button
               key={grupo.title}
-              className={`skill-ticket skill-ticket--${posicao === 0 ? 'center' : posicao < 0 ? 'previous' : 'next'} ${indiceSelecionado === indice ? 'skill-ticket--selected' : ''}`}
+              className={`skill-ticket ${posicao < 0 ? 'skill-ticket--previous' : posicao > 0 ? 'skill-ticket--next' : ''} ${indiceSelecionado === indice ? 'skill-ticket--selected' : ''}`}
               type="button"
               aria-pressed={indiceSelecionado === indice}
               style={{ '--skill-neon': coresDasHabilidades[indice] } as CSSProperties}

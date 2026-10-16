@@ -20,7 +20,9 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem('portfolio-idioma', idioma);
     document.documentElement.lang = idioma === 'en' ? 'en' : 'pt-BR';
-  }, [idioma]);
+    document.title = textos.meta.title;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', textos.meta.description);
+  }, [idioma, textos]);
 
   // Atualiza o ponto da distorção orgânica sem ativá-la sobre o conteúdo.
   function acompanharPonteiro(event: PointerEvent<HTMLElement>) {
@@ -112,7 +114,7 @@ function App() {
 
             <nav className="main-nav" aria-label={textos.nav.aria}>
 
-              <button //Sobre
+              <button
                 className="menu-button"
                 type="button"
                 onClick={() => setTela('sobre')}
@@ -120,7 +122,7 @@ function App() {
                 {textos.nav.about}
               </button>
 
-              <button //Projetos
+              <button
                 className="menu-button"
                 type="button"
                 onClick={() => setTela('projetos')}
@@ -128,7 +130,7 @@ function App() {
                 {textos.nav.projects}
               </button>
 
-              <button //Redes sociais
+              <button
                 className="menu-button"
                 type="button"
                 onClick={() => setTela('redes')}
@@ -136,7 +138,7 @@ function App() {
                 {textos.nav.social}
               </button>
 
-              <button //Skills
+              <button
                 className="menu-button"
                 type="button"
                 onClick={() => setTela('skills')}
@@ -148,7 +150,8 @@ function App() {
           </>
         ) : (
           <>
-            {tela !== 'redes' && tela !== 'skills' && <h1 id="titulo-pagina">{textos.pageTitles[tela]}</h1>}
+            {tela === 'sobre' && <h1 id="titulo-pagina">{textos.pageTitles.sobre}</h1>}
+            {tela === 'projetos' && <h1 id="titulo-pagina">{textos.pageTitles.projetos}</h1>}
 
             {tela === 'sobre' && (
               <About

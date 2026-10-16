@@ -3,11 +3,8 @@ export type Idioma = 'pt' | 'en';
 // Reúne todo o texto da interface para que a troca de idioma seja consistente em todas as telas.
 const pt = {
   pageTitles: {
-    menu: 'Portfólio',
     sobre: 'Um pouco sobre mim',
     projetos: 'Projetos',
-    redes: 'Redes sociais',
-    skills: 'Habilidades',
   },
   nav: {
     aria: 'Seções do portfólio',
@@ -20,6 +17,10 @@ const pt = {
     aria: 'Idioma da interface',
     portuguese: 'PT',
     english: 'EN',
+  },
+  meta: {
+    title: 'Portfólio | Nicolas Gonçalves de Souza',
+    description: 'Portfólio de Nicolas Gonçalves de Souza, estudante de Análise e Desenvolvimento de Sistemas e desenvolvedor em formação.',
   },
   hero: {
     quote: '“Qualquer tecnologia suficientemente avançada é indistinguível da mágica.”',
@@ -98,11 +99,8 @@ const pt = {
 
 const en: typeof pt = {
   pageTitles: {
-    menu: 'Portfolio',
     sobre: 'A little about me',
     projetos: 'Projects',
-    redes: 'Social links',
-    skills: 'Skills',
   },
   nav: {
     aria: 'Portfolio sections',
@@ -115,6 +113,10 @@ const en: typeof pt = {
     aria: 'Interface language',
     portuguese: 'PT',
     english: 'EN',
+  },
+  meta: {
+    title: 'Portfolio | Nicolas Gonçalves de Souza',
+    description: 'Portfolio of Nicolas Gonçalves de Souza, an Analysis and Systems Development student and developer in training.',
   },
   hero: {
     quote: '“Any sufficiently advanced technology is indistinguishable from magic.”',

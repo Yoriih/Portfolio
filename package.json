@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "version": "1.0.0",
-  "description": "",
+  "description": "Portfólio pessoal de Nicolas Gonçalves de Souza com interface pixel art dark neon, responsiva e bilíngue.",
   "main": "index.js",
   "scripts": {
   "dev": "vite",

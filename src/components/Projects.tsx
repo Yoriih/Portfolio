@@ -19,7 +19,7 @@ function Projects({ textos }: ProjectsProps) { // Componente que exibe a lista d
   }
 
   return (
-    <section className="projects-section" aria-label={textos.sectionAria}>
+    <section aria-label={textos.sectionAria}>
       <div className="project-carousel" aria-label={textos.carouselAria}>
         <button
           className="carousel-arrow carousel-arrow--previous"

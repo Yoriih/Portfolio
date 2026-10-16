@@ -14,7 +14,7 @@ function Header() {
         {linhasDoNome.map((palavras, indiceLinha) => (
           <span className="hero-name-line" aria-hidden="true" key={indiceLinha}>
             {palavras.map((palavra, indicePalavra) => (
-              <span className="hero-name-word" key={palavra}>
+              <span key={palavra}>
                 {Array.from(palavra).map((letra, indiceLetra) => (
                   <span
                     className="hero-name-letter"
