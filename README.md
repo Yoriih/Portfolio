@@ -1,6 +1,6 @@
 # Portfólio | Nicolas Gonçalves de Souza
 
-Meu Portfólio pessoal, sou **Nicolas Gonçalves de Souza**, também conhecido como **Yorih**.
+Meu portfólio pessoal, sou **Nicolas Gonçalves de Souza**, também conhecido como **Yorih**.
 
 Aqui eu apresento um pouco da minha trajetória, meus estudos e meus projetos em uma experiência inspirada em jogos 2D pixel art, com identidade dark neon, navegação responsiva e suporte aos idiomas português e inglês.
 
