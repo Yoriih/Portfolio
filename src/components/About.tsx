@@ -1,45 +1,31 @@
+import type { Textos } from '../i18n';
+
 type AboutProps = {
   onVoltar: () => void;
+  textos: Textos['about'];
 };
 
-function About({ onVoltar }: AboutProps) {
+function About({ onVoltar, textos }: AboutProps) {
   return (
 
-    <section className="about-copy" aria-label="Sobre mim">
-      <p>
-        Olá! Sou Nicolas Gonçalves de Souza, mas muitos me conhecem como Yorih.
-        Sou estudante de Análise e Desenvolvimento de Sistemas na UNIUBE e estou
-        dando os primeiros passos para transformar em profissão uma paixão que me
-        acompanha desde a infância: a tecnologia.
-      </p>
+    <section className="about-copy" aria-label={textos.aria}>
+      {textos.paragraphs.map((paragrafo) => <p key={paragrafo}>{paragrafo}</p>)}
 
-      <p>
-        Sempre fui fascinado pelo que podemos criar com ela. Hoje, busco transformar
-        minha adaptabilidade tecnológica e curiosidade em aprendizado e projetos,
-        explorando áreas como desenvolvimento, inteligência artificial, automação
-        e muito mais.
-      </p>
-
-      <p>
-        Cada novo desafio é uma oportunidade de chegar mais perto daquele sonho de
-        criança e de descobrir até onde minha paixão por tecnologia pode me levar.
-      </p>
-
-      <nav className="about-actions" aria-label="Links sobre mim">
+      <nav className="about-actions" aria-label={textos.actionsAria}>
         <a
           className="about-action about-action--resume"
           href="./Nicolas-Goncalves-de-Souza-Curriculo.pdf"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Ver currículo
+          {textos.resume}
         </a>
         <button
           className="about-action about-action--back"
           type="button"
           onClick={onVoltar}
         >
-          ← Voltar ao menu
+          {textos.back}
         </button>
       </nav>
     </section>

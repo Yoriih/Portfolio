@@ -1,49 +1,30 @@
 import { useState } from 'react';
+import type { Textos } from '../i18n';
 
-type Projeto = { // Define a estrutura do projeto.
-  nome: string;
-  descricao: string;
-  status: string;
-  link: string;
-  repositorio: string; 
-  tecnologias: string[];
-  funcionalidades: string[];
+type ProjectsProps = {
+  textos: Textos['projects'];
 };
 
-const projetos: Projeto[] = [
-
-    { //CHARME PET IN FASHION
-        nome: 'Charme Pet in Fashion',
-        descricao: 'Projeto de e-commerce de moda pet, com coleções, peças sob medida e proposta de apoio à causa animal.',
-        status: 'Em desenvolvimento',
-        link: 'https://yoriih.github.io/Projeto-Charme-Pet-in-Fashion/',
-        repositorio: 'https://github.com/Yoriih/Projeto-Charme-Pet-in-Fashion',
-        tecnologias: ['HTML','CSS','JavaScript','Firebase Firestore',],
-        funcionalidades: ['Vitrine de produtos e coleções','Carrinho de compras salvo no navegador','Formulário para solicitar peças sob medida','Seção sobre a causa de proteção animal',],
-    },
-    
-];
-
-function Projects() { // Componente que exibe a lista de projetos.
+function Projects({ textos }: ProjectsProps) { // Componente que exibe a lista de projetos.
   const [indiceSelecionado, setIndiceSelecionado] = useState(0);
   // Mantém os projetos em ordem e deixa espaços livres como cartões de próximos projetos.
-  const projetoSelecionado = projetos[indiceSelecionado];
+  const projetoSelecionado = textos.items[indiceSelecionado];
   const cartasVisiveis = [-1, 0, 1].map((posicao) => {
     const indice = indiceSelecionado + posicao;
-    return { projeto: projetos[indice] ?? null, indice, posicao };
+    return { projeto: textos.items[indice] ?? null, indice, posicao };
   });
 
   function navegarCarrossel(direcao: number) {
-    setIndiceSelecionado((atual) => Math.max(0, Math.min(projetos.length - 1, atual + direcao)));
+    setIndiceSelecionado((atual) => Math.max(0, Math.min(textos.items.length - 1, atual + direcao)));
   }
 
   return (
-    <section className="projects-section" aria-label="Projetos do portfólio">
-      <div className="project-carousel" aria-label="Carrossel de projetos">
+    <section className="projects-section" aria-label={textos.sectionAria}>
+      <div className="project-carousel" aria-label={textos.carouselAria}>
         <button
           className="carousel-arrow carousel-arrow--previous"
           type="button"
-          aria-label="Projeto anterior"
+          aria-label={textos.previous}
           disabled={indiceSelecionado === 0}
           onClick={() => navegarCarrossel(-1)}
         >
@@ -53,27 +34,27 @@ function Projects() { // Componente que exibe a lista de projetos.
         <div className="project-card-rail" aria-live="polite">
           {cartasVisiveis.map(({ projeto, indice, posicao }) => projeto ? (
             <button
-              key={`${projeto.nome}-${indice}`}
+              key={`${projeto.name}-${indice}`}
               className={`project-ticket ${posicao === 0 ? 'project-ticket--active' : 'project-ticket--side'} project-ticket--${posicao < 0 ? 'previous' : posicao > 0 ? 'next' : 'selected'}`}
               type="button"
               aria-pressed={posicao === 0}
               onClick={() => setIndiceSelecionado(indice)}
             >
-              <span className="project-ticket-label">{projeto.nome}</span>
+              <span className="project-ticket-label">{projeto.name}</span>
               <span className="project-ticket-status">{projeto.status}</span>
               <span className="project-ticket-prompt">
-                {posicao === 0 ? 'Em foco' : 'Selecionar projeto'}
+                {posicao === 0 ? textos.focus : textos.select}
               </span>
             </button>
           ) : (
             <div
               key={`coming-${posicao}`}
               className={`project-ticket project-ticket--side project-ticket--coming project-ticket--${posicao < 0 ? 'previous' : 'next'}`}
-              aria-label="Novo projeto em breve"
+              aria-label={textos.comingAria}
             >
-              <span className="project-ticket-label">IS COMING</span>
-              <span className="project-ticket-status">?????</span>
-              <span className="project-ticket-prompt">??? / ??? / ???</span>
+              <span className="project-ticket-label">{textos.comingTitle}</span>
+              <span className="project-ticket-status">{textos.comingStatus}</span>
+              <span className="project-ticket-prompt">{textos.comingPrompt}</span>
             </div>
           ))}
         </div>
@@ -81,8 +62,8 @@ function Projects() { // Componente que exibe a lista de projetos.
         <button
           className="carousel-arrow carousel-arrow--next"
           type="button"
-          aria-label="Próximo projeto"
-          disabled={indiceSelecionado === projetos.length - 1}
+          aria-label={textos.next}
+          disabled={indiceSelecionado === textos.items.length - 1}
           onClick={() => navegarCarrossel(1)}
         >
           →
@@ -90,24 +71,24 @@ function Projects() { // Componente que exibe a lista de projetos.
       </div>
 
       <article className="project-card project-detail" aria-live="polite">
-        <h3>{projetoSelecionado.nome}</h3>
-        <p>{projetoSelecionado.descricao}</p>
-        <p><strong>Status:</strong> {projetoSelecionado.status}</p>
+        <h3>{projetoSelecionado.name}</h3>
+        <p>{projetoSelecionado.description}</p>
+        <p><strong>{textos.statusLabel}</strong> {projetoSelecionado.status}</p>
 
         <div className="project-detail-columns">
           <section>
-            <h4>Tecnologias</h4>
+            <h4>{textos.technologies}</h4>
             <ul>
-              {projetoSelecionado.tecnologias.map((tecnologia) => (
+              {projetoSelecionado.technologies.map((tecnologia) => (
                 <li key={tecnologia}>{tecnologia}</li>
               ))}
             </ul>
           </section>
 
           <section>
-            <h4>Funcionalidades</h4>
+            <h4>{textos.features}</h4>
             <ul>
-              {projetoSelecionado.funcionalidades.map((funcionalidade) => (
+              {projetoSelecionado.features.map((funcionalidade) => (
                 <li key={funcionalidade}>{funcionalidade}</li>
               ))}
             </ul>
@@ -117,11 +98,11 @@ function Projects() { // Componente que exibe a lista de projetos.
         <div className="project-links">
           <a
             className="project-link project-link--source"
-            href={projetoSelecionado.repositorio}
+            href={projetoSelecionado.repository}
             target="_blank"
             rel="noreferrer"
           >
-            Ver código-fonte ↗
+            {textos.source}
           </a>
 
           <a
@@ -130,7 +111,7 @@ function Projects() { // Componente que exibe a lista de projetos.
             target="_blank"
             rel="noreferrer"
           >
-            Ver projeto ↗
+            {textos.live}
           </a>
         </div>
       </article>

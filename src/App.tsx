@@ -1,31 +1,26 @@
-import { useState, type PointerEvent } from 'react';
+import { useEffect, useState, type PointerEvent } from 'react';
 import About from './components/About';
 import Projects from './components/Projects';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Skills from './components/Skills';
 import SocialLinks from './components/SocialLinks';
+import { traducoes, type Idioma } from './i18n';
 
 type Tela = 'menu' | 'sobre' | 'projetos' | 'redes' | 'skills';
 
-const titulos: Record<Tela, string> = {
-  menu: 'Portfólio',
-  sobre: 'Um pouco sobre mim',
-  projetos: 'Projetos',
-  redes: 'Redes sociais',
-  skills: 'Habilidades',
-};
-
-const descricoes: Record<Tela, string> = {
-  menu: 'Conheça um pouco sobre mim e o que estou aprendendo.',
-  sobre: 'Conheça minha história.',
-  projetos: 'Aqui vamos apresentar seus projetos.',
-  redes: 'Aqui vamos reunir seus perfis profissionais.',
-  skills: 'Aqui vamos mostrar suas habilidades e tecnologias.',
-};
-
 function App() {
   const [tela, setTela] = useState<Tela>('menu');
+  // Guarda a preferência no navegador para manter o idioma escolhido entre visitas.
+  const [idioma, setIdioma] = useState<Idioma>(() => (
+    window.localStorage.getItem('portfolio-idioma') === 'en' ? 'en' : 'pt'
+  ));
+  const textos = traducoes[idioma];
+
+  useEffect(() => {
+    window.localStorage.setItem('portfolio-idioma', idioma);
+    document.documentElement.lang = idioma === 'en' ? 'en' : 'pt-BR';
+  }, [idioma]);
 
   // Atualiza o ponto da distorção orgânica sem ativá-la sobre o conteúdo.
   function acompanharPonteiro(event: PointerEvent<HTMLElement>) {
@@ -44,6 +39,27 @@ function App() {
         className={tela === 'menu' ? 'home-screen' : 'content-screen'}
       onPointerMove={acompanharPonteiro}
     >
+      {/* Deixa PT e EN sempre acessíveis, inclusive durante a navegação entre telas. */}
+      <div className="language-switcher" role="group" aria-label={textos.language.aria}>
+        <button
+          type="button"
+          className={idioma === 'pt' ? 'language-option language-option--active' : 'language-option'}
+          aria-pressed={idioma === 'pt'}
+          onClick={() => setIdioma('pt')}
+        >
+          {textos.language.portuguese}
+        </button>
+        <span aria-hidden="true">/</span>
+        <button
+          type="button"
+          className={idioma === 'en' ? 'language-option language-option--active' : 'language-option'}
+          aria-pressed={idioma === 'en'}
+          onClick={() => setIdioma('en')}
+        >
+          {textos.language.english}
+        </button>
+      </div>
+
       {/* Noise invisível ao usuário serve como mapa para a distorção orgânica do fundo. */}
       <svg className="visual-filters" aria-hidden="true" focusable="false">
         <defs>
@@ -92,16 +108,16 @@ function App() {
         {tela === 'menu' ? (
           <>
             <Header />
-            <Hero />
+            <Hero quote={textos.hero.quote} attribution={textos.hero.attribution} />
 
-            <nav className="main-nav" aria-label="Seções do portfólio"> 
+            <nav className="main-nav" aria-label={textos.nav.aria}>
 
               <button //Sobre
                 className="menu-button"
                 type="button"
                 onClick={() => setTela('sobre')}
               >
-                Sobre
+                {textos.nav.about}
               </button>
 
               <button //Projetos
@@ -109,7 +125,7 @@ function App() {
                 type="button"
                 onClick={() => setTela('projetos')}
               >
-                Projetos
+                {textos.nav.projects}
               </button>
 
               <button //Redes sociais
@@ -117,7 +133,7 @@ function App() {
                 type="button"
                 onClick={() => setTela('redes')}
               >
-                Redes
+                {textos.nav.social}
               </button>
 
               <button //Skills
@@ -125,23 +141,24 @@ function App() {
                 type="button"
                 onClick={() => setTela('skills')}
               >
-                Habilidades
+                {textos.nav.skills}
               </button>
 
             </nav>
           </>
         ) : (
           <>
-            {tela !== 'redes' && tela !== 'skills' && <h1 id="titulo-pagina">{titulos[tela]}</h1>}
+            {tela !== 'redes' && tela !== 'skills' && <h1 id="titulo-pagina">{textos.pageTitles[tela]}</h1>}
 
             {tela === 'sobre' && (
               <About
+                textos={textos.about}
                 onVoltar={() => setTela('menu')}
               />
             )}
-            {tela === 'projetos' && <Projects />}
-            {tela === 'skills' && <Skills />}
-            {tela === 'redes' && <SocialLinks onVoltar={() => setTela('menu')} />}
+            {tela === 'projetos' && <Projects textos={textos.projects} />}
+            {tela === 'skills' && <Skills textos={textos.skills} />}
+            {tela === 'redes' && <SocialLinks textos={textos.social} onVoltar={() => setTela('menu')} />}
 
             {tela !== 'redes' && tela !== 'sobre' && (
               <button
@@ -149,7 +166,7 @@ function App() {
                 type="button"
                 onClick={() => setTela('menu')}
               >
-                ← Voltar ao menu
+                {textos.common.back}
               </button>
             )}
           </>

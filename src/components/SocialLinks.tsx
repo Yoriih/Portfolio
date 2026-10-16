@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { Textos } from '../i18n';
 
 // Estrutura do perfil ou contato.
 type PerfilSocial = {
@@ -52,13 +53,13 @@ function IconeRede({ tipo }: { tipo: PerfilSocial['icone'] }) {
   );
 }
 
-function SocialLinks({ onVoltar }: { onVoltar: () => void }) {
+function SocialLinks({ onVoltar, textos }: { onVoltar: () => void; textos: Textos['social'] }) {
   return (
-    <section aria-labelledby="titulo-pagina">
-      <article className="contact-window" aria-label="Painel de contatos">
+    <section aria-label={textos.sectionAria} aria-labelledby="titulo-pagina">
+      <article className="contact-window" aria-label={textos.panelAria}>
         <header className="contact-window-bar">
           <h1 className="contact-window-bar-title" id="titulo-pagina">
-            redessociais.exe
+            {textos.windowTitle}
           </h1>
           <span className="contact-window-controls" aria-hidden="true">■ □ ×</span>
         </header>
@@ -72,7 +73,7 @@ function SocialLinks({ onVoltar }: { onVoltar: () => void }) {
               <path className="avatar-eyes" d="M34 51h9v4h-9zm19 0h9v4h-9z" />
             </svg>
           </div>
-          <p className="contact-window-intro">ME ENCONTRE</p>
+          <p className="contact-window-intro">{textos.intro}</p>
 
           <ul className="social-list">
             {perfisSociais.map((perfil) => (
@@ -87,17 +88,17 @@ function SocialLinks({ onVoltar }: { onVoltar: () => void }) {
                     href={perfil.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Abrir ${perfil.nome}: ${perfil.identificador}`}
+                    aria-label={`${textos.open} ${perfil.nome}: ${perfil.identificador}`}
                   >
-                    Abrir <span aria-hidden="true">↗</span>
+                    {textos.open} <span aria-hidden="true">↗</span>
                   </a>
                 </article>
               </li>
             ))}
           </ul>
-          <p className="contact-window-hint">Selecione um canal para abrir</p>
+          <p className="contact-window-hint">{textos.hint}</p>
           <button className="contact-back-button" type="button" onClick={onVoltar}>
-            ← Voltar ao menu
+            {textos.back}
           </button>
         </div>
       </article>

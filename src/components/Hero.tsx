@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
 
-const citacao = '“Qualquer tecnologia suficientemente avançada é indistinguível da mágica.”';
-const assinatura = '— Arthur C. Clarke';
-const textoCompleto = `${citacao}${assinatura}`;
+type HeroProps = {
+  quote: string;
+  attribution: string;
+};
 
-function Hero() {
+function Hero({ quote, attribution }: HeroProps) {
   const [textoVisivel, setTextoVisivel] = useState('');
+  const textoCompleto = `${quote}${attribution}`;
 
   // Revela a frase em intervalos curtos para simular texto digitado em um jogo.
   useEffect(() => {
+    setTextoVisivel('');
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setTextoVisivel(textoCompleto);
       return;
@@ -25,20 +29,20 @@ function Hero() {
     }, 38);
 
     return () => window.clearInterval(intervalo);
-  }, []);
+  }, [textoCompleto]);
 
   return (
     <section className="hero-quote">
       <blockquote>
         <p
-          className={textoVisivel.length <= citacao.length ? 'quote-cursor' : undefined}
-          aria-label={citacao}
+          className={textoVisivel.length <= quote.length ? 'quote-cursor' : undefined}
+          aria-label={quote}
           aria-live="off"
         >
-          {textoVisivel.slice(0, citacao.length)}
+          {textoVisivel.slice(0, quote.length)}
         </p>
-        <cite className={textoVisivel.length > citacao.length ? 'quote-cursor' : undefined}>
-          {textoVisivel.slice(citacao.length)}
+        <cite className={textoVisivel.length > quote.length ? 'quote-cursor' : undefined}>
+          {textoVisivel.slice(quote.length)}
         </cite>
       </blockquote>
     </section>

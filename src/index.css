@@ -1668,6 +1668,47 @@ button:focus-visible {
   background-repeat: no-repeat;
 }
 
+/* Mantém a escolha PT/EN visível em qualquer tela sem competir com o conteúdo principal. */
+.language-switcher {
+  position: fixed;
+  z-index: 20;
+  top: max(0.8rem, env(safe-area-inset-top));
+  right: max(0.8rem, env(safe-area-inset-right));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgb(192 132 252 / 56%);
+  border-radius: 7px;
+  color: rgb(233 213 255 / 70%);
+  background: rgb(9 6 18 / 78%);
+  box-shadow: 3px 3px 0 #04020a, 0 0 10px rgb(192 132 252 / 16%);
+  font-size: 0.48rem;
+  backdrop-filter: blur(4px);
+}
+
+.language-option {
+  padding: 0.25rem 0.3rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: rgb(233 213 255 / 70%);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.language-option:hover,
+.language-option:focus-visible,
+.language-option--active {
+  border-color: rgb(192 132 252 / 76%);
+  color: #f4eaff;
+  background: rgb(192 132 252 / 18%);
+  outline: none;
+  text-shadow: 0 0 8px rgb(233 213 255 / 65%);
+}
+
 /* Respeita quem prefere reduzir movimento nas configurações do dispositivo. */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1682,5 +1723,14 @@ button:focus-visible {
   /* Para também a animação SVG do ruído para respeitar movimento reduzido. */
   .visual-filters animate {
     display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Reduz o controle sem retirar a área de toque das opções em telas estreitas. */
+  .language-switcher {
+    top: max(0.5rem, env(safe-area-inset-top));
+    right: max(0.5rem, env(safe-area-inset-right));
+    font-size: 0.42rem;
   }
 }
