@@ -66,7 +66,7 @@ function SocialLinks({ onVoltar, textos }: { onVoltar: () => void; textos: Texto
 
         <div className="contact-window-body">
           <div className="contact-avatar">
-            <img src="/minha-foto.jpg" alt="Foto de perfil" />
+            <img src="public/minha-foto.jpg" alt="Foto de perfil" />
           </div>
           <p className="contact-window-intro">{textos.intro}</p>
 
