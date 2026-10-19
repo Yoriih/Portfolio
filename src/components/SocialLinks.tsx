@@ -65,13 +65,8 @@ function SocialLinks({ onVoltar, textos }: { onVoltar: () => void; textos: Texto
         </header>
 
         <div className="contact-window-body">
-          <div className="contact-avatar" aria-hidden="true">
-            <svg viewBox="0 0 96 96" focusable="false">
-              <path className="avatar-hood" d="M48 7C25 7 13 25 13 49v36h70V49C83 25 71 7 48 7Z" />
-              <path className="avatar-shadow" d="M48 20c-15 0-23 13-23 30v24h46V50c0-17-8-30-23-30Z" />
-              <path className="avatar-cloak" d="M13 85c2-19 14-28 25-32h20c11 4 23 13 25 32H13Z" />
-              <path className="avatar-eyes" d="M34 51h9v4h-9zm19 0h9v4h-9z" />
-            </svg>
+          <div className="contact-avatar">
+            <img src="/minha-foto.webp" alt="Foto de perfil" />
           </div>
           <p className="contact-window-intro">{textos.intro}</p>
 
